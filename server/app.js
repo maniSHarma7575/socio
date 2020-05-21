@@ -4,11 +4,11 @@ const PORT = 5000
 const mongoose = require('mongoose')
 const { MONGO_URI } = require('./keys')
 require('./models/user')
+require('./models/posts')
 const requireLogin = require('./middleware/requireLogin')
 
 
-app.use(express.json())
-app.use(require('./routes/auth'))
+
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.connection.on('connected', () => {
@@ -17,6 +17,8 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
     console.log(err)
 })
+app.use(express.json())
+app.use(require('./routes/auth'))
 
 app.get('/protected', requireLogin, (req, res) => {
     res.status(201).json({
