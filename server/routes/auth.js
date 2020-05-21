@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const User = mongoose.model("User")
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const { JWT_SECRET } = require('../keys')
 
 router.get('/', (req, res) => {
     res.send('hello')
@@ -46,6 +48,37 @@ router.post('/signup', (req, res) => {
         })
         .catch(error => {
             console.log(error)
+        })
+})
+
+router.post('/signin', (req, res) => {
+    const { email, password } = req.body
+    if (!email || !password) {
+        return res.status(422).json({
+            error: "All fields are required"
+        })
+    }
+    User.findOne({ email: email })
+        .then(user => {
+            if (!user) {
+                return res.status(422).json({
+                    error: "Invalid email or password"
+                })
+            }
+            bcrypt.compare(password, user.password)
+                .then(doMatch => {
+                    if (doMatch) {
+                        const token = jwt.sign({ _id: user._id }, JWT_SECRET)
+                        res.json({ token })
+                    } else {
+                        return res.status(422).json({
+                            error: "Invalid email or password"
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         })
 })
 
