@@ -3,8 +3,10 @@ const app = express()
 const PORT = 5000
 const mongoose = require('mongoose')
 const { MONGO_URI } = require('./keys')
-
 require('./models/user')
+const requireLogin = require('./middleware/requireLogin')
+
+
 app.use(express.json())
 app.use(require('./routes/auth'))
 
@@ -14,6 +16,12 @@ mongoose.connection.on('connected', () => {
 })
 mongoose.connection.on('error', (err) => {
     console.log(err)
+})
+
+app.get('/protected', requireLogin, (req, res) => {
+    res.status(201).json({
+        message: "Protected route can be used"
+    })
 })
 app.get('/', (req, res) => {
     res.status(201).json({
