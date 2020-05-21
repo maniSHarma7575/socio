@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 const Navbar = () => {
   return(
-  <nav>
+  <nav className="#7e57c2 deep-purple lighten-1">
     <div class="nav-wrapper">
       <Link to="/" class="brand-logo">Socio</Link>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
