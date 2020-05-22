@@ -16,3 +16,12 @@ a{
     border-bottom: 1px solid blue !important;
     box-shadow: 0 1px 0 0 blue !important;
   }
+  .gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .item{
+    width:30%;
+  }
