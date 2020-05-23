@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Link,useHistory } from "react-router-dom";
 import M from 'materialize-css'
 
@@ -8,7 +8,37 @@ const CreatePost=()=>{
   const [body,setBody]=useState('')
   const [image,setImage]=useState('')
   const [url,setUrl]=useState('')
-
+  useEffect(()=>{
+    if(url)
+    {
+      fetch("/createpost",{
+        method:"post",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+        body:JSON.stringify({
+          title:title,
+          body:body,
+          image:url
+        })
+      }).then(res=>res.json())
+      .then(data=>{
+        if(data.error)
+        {
+          M.toast({html: data.error,classes:"#c62828 red darken-3"})
+        }
+        else{
+          M.toast({html: "Post Upload success",classes:"#00c853 green accent-4"})
+          history.push('/')
+  
+        }
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
+  },[url])
   const postDetails=()=>{
     const data=new FormData()
     data.append("file",image)
@@ -26,32 +56,7 @@ const CreatePost=()=>{
       console.log(error)
     })
 
-    fetch("/createpost",{
-      method:"post",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer "+localStorage.getItem("jwt")
-      },
-      body:JSON.stringify({
-        title:title,
-        body:body,
-        image:url
-      })
-    }).then(res=>res.json())
-    .then(data=>{
-      if(data.error)
-      {
-        M.toast({html: data.error,classes:"#c62828 red darken-3"})
-      }
-      else{
-        M.toast({html: "Post Upload success",classes:"#00c853 green accent-4"})
-        history.push('/')
-
-      }
-    })
-    .catch(error=>{
-      console.log(error)
-    })
+    
   }
 
   return(
