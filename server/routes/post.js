@@ -18,9 +18,9 @@ router.get('/allpost', requireLogin, (req, res) => {
 })
 router.post('/createpost', requireLogin, (req, res) => {
 
-    const { title, body } = req.body
+    const { title, body,image } = req.body
 
-    if (!title || !body) {
+    if (!title || !body ||!image) {
         return res.status(422).json({
             error: "Please add all the fields"
         })
@@ -29,6 +29,7 @@ router.post('/createpost', requireLogin, (req, res) => {
     const post = new Post({
         title,
         body,
+        photo:image,
         postedBy: req.user
     })
     post.save().then(result => {
