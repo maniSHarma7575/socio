@@ -34,16 +34,12 @@ const Home=()=>{
         const newData=data.map(item=>{
           if(item._id===result.result._id)
           {
-           // console.log(result.result)
            return {...result.result, likes: result.result.likes,updated:'updated'}
           }
           else{
-           // console.log(item)
             return item
           }
         })
-        //console.log(newData)
-        
         console.log(newData)
         setData(newData)
       })
@@ -70,15 +66,12 @@ const Home=()=>{
           
           if(item._id===result.result._id)
           {
-       //     console.log(result.result)
             return result.result
           }
           else{
-       //     console.log(item)
             return item
           }
         })
-       // console.log(result.result._id)
         setData(newData)
       })
       .catch(error=>{
@@ -92,9 +85,8 @@ const Home=()=>{
     <div className="home">
       {
         data.map(item=>{ 
-          console.log(item.likes.length)
         return(
-          <div className="card home-card" key={item.postedBy._id}>
+          <div className="card home-card" key={item._id}>
               <h5 style={{fontWeight:"bold"}} >{item.postedBy.name}</h5>
               <div className="card-image">
                 <img src={item.photo} />
@@ -102,8 +94,8 @@ const Home=()=>{
               <div className="card-content">
                 <i className="material-icons" style={{color:"red"}}>favorite</i>
                 {item.likes.includes(state._id)?
-                <i className="material-icons" onClick={()=>unlikePost(item._id)}>thumb_down</i>:
-                <i className="material-icons" onClick={()=>likePost(item._id)}>thumb_up</i>
+                <i className="material-icons" onClick={()=>{unlikePost(item._id)}}>thumb_down</i>:
+                <i className="material-icons" onClick={()=>{likePost(item._id)}}>thumb_up</i>
                 }
                 <h6>{item.likes.length} likes</h6>
                 <h6 style={{fontWeight:"bold"}}>{item.title}</h6>
