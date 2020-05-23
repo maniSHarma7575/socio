@@ -1,7 +1,26 @@
-import React from 'react'
-
+import React,{useEffect, useState,useContext} from 'react'
+import {UserContext} from '../../App'
 const Profile=()=>{
+  const {state,dispatch}=useContext(UserContext)
+  const [data,setData]=useState([])
+  useEffect(()=>{
+    fetch("/mypost",{
+      headers:{
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      }
+    })
+    .then(res=>res.json())
+    .then(result=>{
+      setData(result.data)
+      
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  },[])
+  console.log(data)
   return(
+    
     <div style={{maxWidth:"550px",margin:"0px auto"}}>
       <div style={{
         display:"flex",
@@ -15,7 +34,7 @@ const Profile=()=>{
           />
         </div>
         <div>
-            <h4>Angelina</h4>
+            <h4>{state?state.name:"Loading..."}</h4>
             <div style={{
               display:"flex",
               justifyContent:"space-between",
@@ -28,15 +47,14 @@ const Profile=()=>{
         </div>
       </div>
       <div className="gallery">
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-        <img className="item" src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"/>
-
+            {
+              data.map(item=>{
+                return(
+                          <img className="item" src={item.photo} key={item.postedBy._id} alt={item.postedBy.title}/>
+                )
+              })
+            }
+        
       </div>
     </div>
   )
