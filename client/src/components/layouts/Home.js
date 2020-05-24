@@ -77,8 +77,38 @@ const Home=()=>{
       .catch(error=>{
         console.log(error)
       })
-
-    
+  }
+  const makeComment=(text,postedBy)=>{
+    console.log(text,postedBy)
+    fetch('/comment',{
+      method:"put",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      },
+      body:JSON.stringify({
+        text:text,
+        postedBy:postedBy
+      })
+    })
+    .then(res=>res.json())
+    .then(result=>{
+      console.log(result)
+      const newData=data.map(item=>{
+          
+        if(item._id===result._id)
+        {
+          return result
+        }
+        else{
+          return item
+        }
+      })
+      setData(newData)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
   }
   
   return(
@@ -100,7 +130,20 @@ const Home=()=>{
                 <h6>{item.likes.length} likes</h6>
                 <h6 style={{fontWeight:"bold"}}>{item.title}</h6>
                 <p>{item.body}</p>
+                {
+                  item.comments.map(comment=>{
+                    return(
+                      <h6 key={comment._id}><span style={{fontWeight:"500"}}>{comment.postedBy.name}</span>{comment.text}</h6>
+                    )
+                  })
+                }
+                <form onSubmit={(e)=>{
+                  console.log('clicked')
+                  e.preventDefault()
+                  makeComment(e.target[0].value,item._id)
+                }}>
                 <input type="text" placeholder="Add a comment"/>
+                </form>
               </div>
         </div>
         )

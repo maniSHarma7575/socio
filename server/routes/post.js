@@ -7,6 +7,7 @@ const requireLogin = require('../middleware/requireLogin')
 router.get('/allpost', requireLogin, (req, res) => {
     Post.find()
         .populate('postedBy', "_id name")
+        .populate('comments.postedBy',"_id name")
         .then(result => {
             res.json({
                 result
@@ -85,19 +86,22 @@ router.put('/unlike',requireLogin,(req,res)=>{
 router.put('/comment',requireLogin,(req,res)=>{
     const comment={
         text:req.body.text,
-        postedBy:req.user._id
+        postedBy:req.user
     }
-    Post.findByIdAndUpdate(req.body.postId,{
+    console.log(req.body.postedBy)
+    Post.findByIdAndUpdate(req.body.postedBy,{
         $push:{comments:comment}
     },{
         new:true
     })
-    .populate("comments:postedBy","_id name")
+    .populate("comments.postedBy","_id name")
+    .populate("postedBy","_id name")
     .exec((err,result)=>{
         if(err)
         {
             return res.status(422).json({error:err})
         }
+        
         res.json(result)
     })
 })
