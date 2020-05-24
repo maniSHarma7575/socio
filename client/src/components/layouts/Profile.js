@@ -1,5 +1,6 @@
 import React,{useEffect, useState,useContext} from 'react'
 import {UserContext} from '../../App'
+
 const Profile=()=>{
   const {state,dispatch}=useContext(UserContext)
   const [data,setData]=useState([])
