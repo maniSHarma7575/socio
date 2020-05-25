@@ -24,6 +24,32 @@ const Profile=()=>{
       console.log(error)
     })
   },[])
+
+  const followUser=()=>{
+    fetch('/follow',{
+      method:"put",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem('jwt')
+      },
+      body:JSON.stringify({
+        followId:userid
+      })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+
+      console.log(data)
+      dispatch({type:"UPDATE",payload:{followers:data.followers,following:data.following}})
+      localStorage.setItem("user",JSON.stringify(data))
+      setProfile(prevState=>{
+        return{
+          ...prevState,
+          user:data
+        }
+      })
+    })
+  }
   return(
     <>
       {userProfile?
@@ -48,9 +74,10 @@ const Profile=()=>{
               width:'108%'
             }}>
               <h6>{userProfile.post.length} posts</h6>
-              <h6>40followers</h6>
-              <h6>40following</h6>
+              <h6>{userProfile.user.followers.length} Followers</h6>
+              <h6>{userProfile.user.following.length} Following</h6>
             </div>
+            <button onClick={()=>followUser()} className="btn waves-effect waves-light #1976d2 blue darken-2">Follow</button>
         </div>
       </div>
       <div className="gallery">

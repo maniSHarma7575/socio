@@ -6,6 +6,12 @@ export const reducer=(state,action)=>{
       return action.payload
     case "CLEAR":
       return null
+    case "UPDATE":
+      return {
+        ...state,
+        followers:action.payload.followers,
+        following:action.payload.following
+      }
     default:
       return state
   }

@@ -37,6 +37,30 @@ router.put('/follow',requireLogin,(req,res)=>{
     },{
       new:true
     })
+    .select("-password")
+    .then(result=>{
+      res.json(result)
+    })
+    .catch(error=>{
+      return res.status(422).json({error:err})
+    })
+
+  })
+})
+router.put('/unfollow',requireLogin,(req,res)=>{
+  User.findByIdAndUpdate(req.body.unfollowId,{
+    $pull:{followers:req.user._id}
+  },{new:true},(err,result)=>{
+    if(err)
+    {
+      return res.status(422).json({error:err})
+    }
+    User.findByIdAndUpdate(req.user._id,{
+      $pull:{following:req.body.unfollowId}
+    },{
+      new:true
+    })
+    .select("-password")
     .then(result=>{
       res.json(result)
     })
