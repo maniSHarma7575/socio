@@ -12,6 +12,11 @@ export const reducer=(state,action)=>{
         followers:action.payload.followers,
         following:action.payload.following
       }
+    case "UPDATEPHOTO":
+      return{
+        ...state,
+        photo:action.payload
+      }
     default:
       return state
   }
