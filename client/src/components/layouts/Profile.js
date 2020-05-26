@@ -31,7 +31,7 @@ const Profile=()=>{
       }}>
         <div>
           <img style={{width:"160px",height:"160px",borderRadius:"80px"}}
-            src="https://cdn.pixabay.com/photo/2015/01/12/10/44/portrait-597173_960_720.jpg"
+            src={state?state.photo:'https://res.cloudinary.com/socio/image/upload/v1590489444/nophoto_zuge3f.jpg'}
           />
         </div>
         <div>
