@@ -31,3 +31,7 @@ a{
     height: max-content;
     margin: 26px auto;
   }
+
+  .material-icons:hover{
+    cursor: pointer;
+  }

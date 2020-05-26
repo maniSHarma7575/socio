@@ -7,7 +7,7 @@ const Home=()=>{
   const [com,setCom]=useState('')
   useEffect(()=>{
     
-      fetch('/allpost',{
+      fetch('/mysubpost',{
         headers:{
           Authorization:"Bearer "+localStorage.getItem("jwt")
         }

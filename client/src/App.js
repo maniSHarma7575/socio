@@ -8,6 +8,8 @@ import SignUp from "./components/layouts/SignUp";
 import Profile from "./components/layouts/Profile";
 import CreatePost from "./components/layouts/CreatePost"
 import UserProfile from "./components/layouts/UserProfile"
+import SubscribePosts from "./components/layouts/SubscribePosts"
+
 
 import {reducer,initialState} from './reducers/userReducers'
 export const UserContext=createContext()
@@ -33,6 +35,8 @@ const Routing=()=>{
             <Route exact path='/profile'><Profile/></Route>
             <Route path='/createpost'><CreatePost/></Route>
             <Route path='/profile/:userid'><UserProfile/></Route>
+            <Route path='/myfollowposts'><SubscribePosts/></Route>
+
 
         </Switch>
     )
