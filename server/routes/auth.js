@@ -5,6 +5,7 @@ const User = mongoose.model("User")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/keys')
+const crypto=require('crypto')
 const nodemailer=require('nodemailer')
 const sendgridTransport=require('nodemailer-sendgrid-transport')
 
@@ -101,6 +102,39 @@ router.post('/signin', (req, res) => {
                     console.log(error)
                 })
         })
+})
+
+router.post('/resetLink',(req,res)=>{
+    crypto.randomBytes(32,(err,buffer)=>{
+        if(err)
+        {
+            console.log(err)
+        }
+        const token=buffer.toString('hex')
+        User.findOne({email:req.body.email})
+        .then(user=>{
+            if(!user)
+            {
+                return res.status(422).json({error:"User  dosen't exists with this email"})
+            }
+            user.resetToken=token
+            user.expireToken=Date.now()+3600000
+            user.save()
+            .then((result)=>{
+                transport.sendMail({
+                    to:user.email,
+                    from:'sofowal733@ximtyl.com',
+                    subject:"Password Reset link added",
+                    html:`
+                    <p>You request for reset password link</p>
+                    <h5>Click in this <a href="http://localhost:3000/reset/${token}">Link</a></h5>
+                    `
+                })
+                res.json({message:"Check your email"})
+            })
+            
+        })
+    })
 })
 
 module.exports = router
