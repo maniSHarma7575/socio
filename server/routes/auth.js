@@ -9,11 +9,20 @@ const crypto=require('crypto')
 const nodemailer=require('nodemailer')
 const sendgridTransport=require('nodemailer-sendgrid-transport')
 
-const transport=nodemailer.createTransport(sendgridTransport({
+/*const transport=nodemailer.createTransport(sendgridTransport({
     auth:{
         api_key:"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"
     }
 }))
+*/
+const transport=nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'componentapp3@gmail.com',
+      pass: 'M@ths7575'
+    }
+  })
+
 
 //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
 
@@ -123,16 +132,53 @@ router.post('/resetLink',(req,res)=>{
             .then((result)=>{
                 transport.sendMail({
                     to:user.email,
-                    from:'sofowal733@ximtyl.com',
+                    from:'componentapp3@gmail.com',
                     subject:"Password Reset link added",
                     html:`
                     <p>You request for reset password link</p>
                     <h5>Click in this <a href="http://localhost:3000/reset/${token}">Link</a></h5>
                     `
                 })
+                .catch(error=>{
+                    console.log(error)
+                })
                 res.json({message:"Check your email"})
             })
-            
+            .catch(error=>{
+                console.log(error)
+            })
+
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    })
+})
+
+router.post('/updatePassword',(req,res)=>{
+    const newPassword=req.body.password
+    const sentToken=req.body.token
+    User.findOne({resetToken:sentToken,expireToken:{$gt:Date.now()}})
+    .then(user=>{
+        if(!user){
+            return res.status(422).json({
+                error:"Try again link expired"
+            })
+        }
+        bcrypt.hash(newPassword,12)
+        .then(hashPassword=>{
+            user.password=hashPassword,
+            user.resetToken=undefined,
+            user.expireToken=undefined,
+            user.save()
+            .then(savedUser=>{
+                res.json({
+                    message:"Password Updated Successfully"
+                })
+            })
+        })
+        .catch(error=>{
+            console.log(error)
         })
     })
 })

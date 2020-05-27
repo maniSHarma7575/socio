@@ -47,6 +47,8 @@ const Login=()=>{
         <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
         <button onClick={()=>PostData()} className="btn waves-effect waves-light #1976d2 blue darken-2">Login</button>
         <p><Link to="/register">Don't have an account? Register</Link></p>
+        <h6><Link to="/reset">Forgot Password ?</Link></h6>
+
 
       </div>
     </div>

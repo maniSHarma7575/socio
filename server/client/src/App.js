@@ -11,6 +11,7 @@ import UserProfile from "./components/layouts/UserProfile"
 import SubscribePosts from "./components/layouts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
 import ResetPassword from "./components/layouts/Reset";
+import NewPassword from "./components/layouts/NewPassword";
 export const UserContext=createContext()
 const Routing=()=>{
     const history=useHistory()
@@ -36,7 +37,9 @@ const Routing=()=>{
             <Route path='/createpost'><CreatePost/></Route>
             <Route path='/profile/:userid'><UserProfile/></Route>
             <Route path='/myfollowposts'><SubscribePosts/></Route>
-            <Route path='/reset'><ResetPassword/></Route>
+            <Route exact path='/reset'><ResetPassword/></Route>
+            <Route path='/reset/:token'><NewPassword/></Route>
+
 
 
 
