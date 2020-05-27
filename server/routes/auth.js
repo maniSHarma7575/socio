@@ -4,11 +4,9 @@ const mongoose = require('mongoose')
 const User = mongoose.model("User")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = require('../keys')
+const { JWT_SECRET } = require('../config/keys')
 
-router.get('/', (req, res) => {
-    res.send('hello')
-})
+
 
 router.post('/signup', (req, res) => {
     const { name, email, password,photo } = req.body
