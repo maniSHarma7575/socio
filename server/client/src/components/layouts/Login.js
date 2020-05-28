@@ -46,6 +46,15 @@ const Login=()=>{
         <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
         <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
         <button onClick={()=>PostData()} className="btn waves-effect waves-light #1976d2 blue darken-2">Login</button>
+        <div className="col s12 m6 offset-m3 center-align" style={{marginTop:"7px"}}>
+          <Link className="oauth-container btn darken-4 white black-text" to="/google-oauth" style={{textTransform:"none"}}>
+              <div className="left">
+                  <img width="20px" style={{marginTop:"7px",marginBottom:"8px"}} alt="Google sign-in" 
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+              </div>
+              Login with Google
+          </Link>
+        </div>
         <p><Link to="/register">Don't have an account? Register</Link></p>
         <h6><Link to="/reset">Forgot Password ?</Link></h6>
 

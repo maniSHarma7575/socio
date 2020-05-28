@@ -8,6 +8,7 @@ const { JWT_SECRET } = require('../config/keys')
 const crypto=require('crypto')
 const nodemailer=require('nodemailer')
 const {USER_EMAIL,USER_PASS,RESET_DOMAIN} =require('../config/keys')
+const passport=require('passport')
 const sendgridTransport=require('nodemailer-sendgrid-transport')
 
 /*const transport=nodemailer.createTransport(sendgridTransport({
@@ -183,5 +184,10 @@ router.post('/updatePassword',(req,res)=>{
         })
     })
 })
-
+router.get("//google-oauth",passport.authenticate("google",{
+    scope:[
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email"
+    ]
+}))
 module.exports = router
