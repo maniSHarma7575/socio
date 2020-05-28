@@ -154,7 +154,7 @@ const Home=()=>{
                 {
                   item.comments.map(comment=>{
                     return(
-                      <h6 key={comment._id}><span style={{fontWeight:"500"}}>{comment.postedBy.name}</span>{comment.text}</h6>
+                      <h6 key={comment._id}><span style={{fontWeight:"500"}}>{comment.postedBy.name} </span>{comment.text}</h6>
                     )
                   })
                 }

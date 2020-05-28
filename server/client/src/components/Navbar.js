@@ -34,7 +34,26 @@ const Navbar = () => {
       <li key="7"><Link to="/register">Sign Up</Link></li>]
     }
   }
-  
+  const renderSearch=()=>{
+    if(state)
+    {
+      const array=new Array()
+      console.log('fine')
+      {userDeatails.map(item=>{
+          array.push(<Link to={item._id==state._id?"/profile/":"/profile/"+item._id} onClick={()=>{M.Modal.getInstance(searchModal.current).close();setSearch('')}}><li key={item._id} className="collection-item avatar">
+          <img src={item.photo} alt="" className="circle" />
+         <strong><span className="title">{item.name}</span></strong>
+          <p>{item.email}</p>
+        </li></Link>)
+      })}
+      return array
+    }
+    else{
+      return[
+        <li></li>
+      ]
+    }
+  }
   const fetchUsers=(query)=>{
     setSearch(query)
     fetch('/searchUser',{
@@ -65,14 +84,7 @@ const Navbar = () => {
             <input type="email" placeholder="Search User" value={search} onChange={(e)=>fetchUsers(e.target.value)} required/>
         </div>
         <ul className="collection">
-            {userDeatails.map(item=>{
-              return (
-                <Link to={item._id==state._id?"/profile/":"/profile/"+item._id} onClick={()=>{M.Modal.getInstance(searchModal.current).close();setSearch('')}}><li key={item._id} className="collection-item avatar">
-                  <img src={item.photo} alt="" className="circle" />
-                 <strong><span className="title">{item.name}</span></strong>
-                  <p>{item.email}</p>
-                </li></Link>)
-            })}
+            {renderSearch()}
         </ul>
         <div className="modal-footer">
           <button  className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>close</button>
