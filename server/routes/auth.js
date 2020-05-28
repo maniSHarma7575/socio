@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/keys')
 const crypto=require('crypto')
 const nodemailer=require('nodemailer')
+const {USER_EMAIL,USER_PASS,RESET_DOMAIN} =require('../config/keys')
 const sendgridTransport=require('nodemailer-sendgrid-transport')
 
 /*const transport=nodemailer.createTransport(sendgridTransport({
@@ -18,8 +19,8 @@ const sendgridTransport=require('nodemailer-sendgrid-transport')
 const transport=nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'componentapp3@gmail.com',
-      pass: 'M@ths7575'
+      user: USER_EMAIL,
+      pass: USER_PASS
     }
   })
 
@@ -58,7 +59,7 @@ router.post('/signup', (req, res) => {
                         .then(user => {
                             transport.sendMail({
                                 to:user.email,
-                                from:"sofowal733@ximtyl.com",
+                                from:USER_EMAIL,
                                 subject:"Sign up successfull",
                                 html:"<h1>Welcome to instagram !Kudos for becoming the memeber of the Socio organisation</h1>"
                             })
@@ -132,11 +133,11 @@ router.post('/resetLink',(req,res)=>{
             .then((result)=>{
                 transport.sendMail({
                     to:user.email,
-                    from:'componentapp3@gmail.com',
+                    from:USER_EMAIL,
                     subject:"Password Reset link added",
                     html:`
                     <p>You request for reset password link</p>
-                    <h5>Click in this <a href="http://localhost:3000/reset/${token}">Link</a></h5>
+                    <h5>Click in this <a href="${RESET_DOMAIN}/reset/${token}">Link</a></h5>
                     `
                 })
                 .catch(error=>{

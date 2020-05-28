@@ -39,10 +39,6 @@ const Routing=()=>{
             <Route path='/myfollowposts'><SubscribePosts/></Route>
             <Route exact path='/reset'><ResetPassword/></Route>
             <Route path='/reset/:token'><NewPassword/></Route>
-
-
-
-
         </Switch>
     )
 }
