@@ -5,6 +5,7 @@ import M from 'materialize-css'
 
 const Navbar = () => {
   const [search,setSearch]=useState('')
+  const [userDeatails,setuserDetails]=useState([])
   const searchModal=useRef(null)
   const {state,dispatch}=useContext(UserContext)
   const history=useHistory()
@@ -34,6 +35,23 @@ const Navbar = () => {
     }
   }
   
+  const fetchUsers=(query)=>{
+    setSearch(query)
+    fetch('/searchUser',{
+      method:"post",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem('jwt')
+      },
+      body:JSON.stringify({
+        query:query
+      })
+    })
+    .then(res=>res.json())
+    .then(user=>{
+      setuserDetails(user.user)
+    })
+  }
   return(
   <nav className="#7e57c2 deep-purple lighten-1">
     <div className="nav-wrapper">
@@ -44,10 +62,20 @@ const Navbar = () => {
     </div>
     <div id="modal1" className="modal" ref={searchModal} style={{color:"black"}}>
         <div className="modal-content">
-        <input type="email" placeholder="Search User" value={search} onChange={(e)=>setSearch(e.target.value)} required/>
+            <input type="email" placeholder="Search User" value={search} onChange={(e)=>fetchUsers(e.target.value)} required/>
         </div>
+        <ul className="collection">
+            {userDeatails.map(item=>{
+              return (
+                <Link to={item._id==state._id?"/profile/":"/profile/"+item._id} onClick={()=>{M.Modal.getInstance(searchModal.current).close();setSearch('')}}><li key={item._id} className="collection-item avatar">
+                  <img src={item.photo} alt="" className="circle" />
+                 <strong><span className="title">{item.name}</span></strong>
+                  <p>{item.email}</p>
+                </li></Link>)
+            })}
+        </ul>
         <div className="modal-footer">
-          <button  className="modal-close waves-effect waves-green btn-flat">Agree</button>
+          <button  className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>close</button>
         </div>
     </div>
   </nav>
