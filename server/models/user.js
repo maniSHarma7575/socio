@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    oauthProvider:{
+        type: String,
+        default:undefined
+    },
     resetToken:String,
     expireToken:Date,
     photo:{

@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import { Link,useHistory } from "react-router-dom";
 import M from 'materialize-css'
+import GoogleLogin from 'react-google-login';
+
 const SignUp=()=>{
   const history=useHistory()
   const [name,setName]=useState('')
@@ -8,6 +10,7 @@ const SignUp=()=>{
   const [email,setEmail]=useState('')
   const [image,setImage]=useState('')
   const [url,setUrl]=useState('')
+  const [oauthProvider,setOauthProvider]=useState('')
 
   useEffect(()=>{
     if(url)
@@ -43,7 +46,8 @@ const SignUp=()=>{
         name:name,
         email:email,
         password:password,
-        photo:url
+        photo:url,
+        oauthProvider:oauthProvider
       })
     }).then(res=>res.json())
     .then(data=>{
@@ -70,6 +74,15 @@ const SignUp=()=>{
       uploadFields();
     }
   }
+  const responseGoogle = (response) => {
+    console.log(response.profileObj)
+    console.log(response.profileObj.email,response.profileObj.googleId);
+    setEmail(response.profileObj.email)
+    setPassword(response.profileObj.googleId)
+    setName(response.profileObj.name)
+    setOauthProvider('google')
+    setUrl(response.profileObj.imageUrl)
+  }
   return(
     <div className="mycard">
       <div className="card auth-card ">
@@ -88,7 +101,13 @@ const SignUp=()=>{
         </div>
         <button className="btn waves-effect waves-light #1976d2 blue darken-2"
         onClick={()=>PostData()}>Register</button>
-       
+        <GoogleLogin
+        clientId="1090694937783-469boou87u6gjjk0eflqeh513qnhugog.apps.googleusercontent.com"
+        buttonText="Register"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+        />
         <p><Link to="/login">Already have an account? Login</Link></p>
       </div>
     </div>

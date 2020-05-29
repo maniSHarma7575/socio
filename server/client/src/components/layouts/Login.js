@@ -1,15 +1,22 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext, useEffect} from 'react'
 import { Link,useHistory } from "react-router-dom";
 import M from 'materialize-css'
 import {UserContext} from '../../App'
+import GoogleLogin from 'react-google-login';
 const Login=()=>{
+ 
   const {state,dispatch}=useContext(UserContext)
   const history=useHistory()
   const [password,setPassword]=useState('')
   const [email,setEmail]=useState('')
+  const [oauthProvider,setoauthProvider]=useState(undefined)
+  useEffect(()=>{
+    if(oauthProvider)
+    {
+    PostData()
+    }
+  },[oauthProvider])
   const PostData=(e)=>{
-    console.log('executed')
-    
     fetch("/signin",{
       method:"post",
       headers:{
@@ -31,13 +38,19 @@ const Login=()=>{
         dispatch({type:"USER",payload:data.user})
         M.toast({html: "SignIn successfull",classes:"#00c853 green accent-4"})
         history.push('/')
-
       }
     })
     .catch(error=>{
       console.log(error)
     })
     
+  }
+  const responseGoogle = (response) => {
+    console.log(response.profileObj)
+    console.log(response.profileObj.email,response.profileObj.googleId);
+      setEmail(response.profileObj.email)
+      setPassword(response.profileObj.googleId)
+      setoauthProvider('google')
   }
   return(
     <div className="mycard">
@@ -46,19 +59,15 @@ const Login=()=>{
         <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
         <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
         <button onClick={()=>PostData()} className="btn waves-effect waves-light #1976d2 blue darken-2">Login</button>
-        <div className="col s12 m6 offset-m3 center-align" style={{marginTop:"7px"}}>
-          <Link className="oauth-container btn darken-4 white black-text" to="/google-oauth" style={{textTransform:"none"}}>
-              <div className="left">
-                  <img width="20px" style={{marginTop:"7px",marginBottom:"8px"}} alt="Google sign-in" 
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-              </div>
-              Login with Google
-          </Link>
-        </div>
+        <GoogleLogin
+        clientId="1090694937783-469boou87u6gjjk0eflqeh513qnhugog.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+        />
         <p><Link to="/register">Don't have an account? Register</Link></p>
         <h6><Link to="/reset">Forgot Password ?</Link></h6>
-
-
       </div>
     </div>
   )

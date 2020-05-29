@@ -8,7 +8,6 @@ const { JWT_SECRET } = require('../config/keys')
 const crypto=require('crypto')
 const nodemailer=require('nodemailer')
 const {USER_EMAIL,USER_PASS,RESET_DOMAIN} =require('../config/keys')
-const passport=require('passport')
 const sendgridTransport=require('nodemailer-sendgrid-transport')
 
 /*const transport=nodemailer.createTransport(sendgridTransport({
@@ -17,6 +16,7 @@ const sendgridTransport=require('nodemailer-sendgrid-transport')
     }
 }))
 */
+
 const transport=nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -35,7 +35,7 @@ router.get('/',(req,res)=>{
 })
 
 router.post('/signup', (req, res) => {
-    const { name, email, password,photo } = req.body
+    const { name, email, password,photo,oauthProvider } = req.body
     if (!email || !password || !name) {
         return res.status(422).json({
             error: "Required all fields"
@@ -54,7 +54,8 @@ router.post('/signup', (req, res) => {
                         name,
                         email,
                         password: hashPassword,
-                        photo:photo
+                        photo:photo,
+                        oauthProvider:oauthProvider
                     })
                     user.save()
                         .then(user => {
@@ -83,8 +84,8 @@ router.post('/signup', (req, res) => {
 })
 
 router.post('/signin', (req, res) => {
-    console.log('oka')
     const { email, password } = req.body
+    console.log(email,password)
     if (!email || !password) {
         return res.status(422).json({
             error: "All fields are required"
@@ -184,10 +185,5 @@ router.post('/updatePassword',(req,res)=>{
         })
     })
 })
-router.get("//google-oauth",passport.authenticate("google",{
-    scope:[
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email"
-    ]
-}))
+
 module.exports = router

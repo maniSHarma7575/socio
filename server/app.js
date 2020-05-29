@@ -8,9 +8,6 @@ require('./models/user')
 require('./models/posts')
 const requireLogin = require('./middleware/requireLogin')
 
-
-
-
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.connection.on('connected', () => {
     console.log('Connected success')
