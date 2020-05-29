@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "icons": "^1.0.0",
     "materialize-css": "^1.0.0-rc.2",
+    "node-sass": "^4.14.1",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
