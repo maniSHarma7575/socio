@@ -56,8 +56,8 @@ const Login=()=>{
     <div className="mycard">
       <div className="card auth-card ">
         <h2>Socio</h2>
-        <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
-        <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
+        <input type="email" placeholder="Email" value={oauthProvider?'':email} onChange={(e)=>setEmail(e.target.value)} required/>
+        <input type="password" placeholder="Password" value={oauthProvider?'':password} onChange={(e)=>setPassword(e.target.value)} required/>
         <button onClick={()=>PostData()} className="btn waves-effect waves-light #1976d2 blue darken-2">Login</button>
         <GoogleLogin
         clientId="1090694937783-469boou87u6gjjk0eflqeh513qnhugog.apps.googleusercontent.com"

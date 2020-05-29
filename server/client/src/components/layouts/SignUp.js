@@ -87,9 +87,9 @@ const SignUp=()=>{
     <div className="mycard">
       <div className="card auth-card ">
         <h2>Socio</h2>
-        <input type="text" placeholder="Name" value={name} onChange={(e)=>setName(e.target.value)} required/>
-        <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
-        <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
+        <input type="text" placeholder="Name" value={oauthProvider?'':name} onChange={(e)=>setName(e.target.value)} required/>
+        <input type="email" placeholder="Email" value={oauthProvider?'':email} onChange={(e)=>setEmail(e.target.value)} required/>
+        <input type="password" placeholder="Password" value={oauthProvider?'':password} onChange={(e)=>setPassword(e.target.value)} required/>
         <div className="file-field input-field">
         <div className="btn #1976d2 blue darken-2">
         <span>Upload Image</span>
