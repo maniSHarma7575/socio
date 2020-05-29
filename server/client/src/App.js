@@ -1,5 +1,4 @@
 import React,{useContext, createContext,useReducer,useEffect} from "react";
-import "./App.css"
 import Navbar from './components/Navbar'
 import {BrowserRouter,Route, Switch,useHistory} from 'react-router-dom'
 import Home from "./components/layouts/Home";
@@ -12,6 +11,9 @@ import SubscribePosts from "./components/layouts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
 import ResetPassword from "./components/layouts/Reset";
 import NewPassword from "./components/layouts/NewPassword";
+import './assets/scss/index.scss';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from './theme';
 export const UserContext=createContext()
 const Routing=()=>{
     const history=useHistory()
@@ -45,12 +47,14 @@ const Routing=()=>{
 function App() {
     const [state,dispatch]=useReducer(reducer,initialState)
     return (
+        <ThemeProvider theme={theme}>
         <UserContext.Provider value={{state:state,dispatch:dispatch}}>
         <BrowserRouter>
         <Navbar/>
         <Routing />
         </BrowserRouter>
         </UserContext.Provider>
+        </ThemeProvider>
     )
 }
 
