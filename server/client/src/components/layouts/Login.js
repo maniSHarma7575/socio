@@ -7,6 +7,10 @@ import {makeStyles,createStyles} from '@material-ui/styles'
 import Alert from '@material-ui/lab/Alert';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 //import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -37,11 +41,18 @@ const schema = {
 };
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.white,
     height: '100%'
   },
   grid: {
-    height: '100%'
+    height: '100%',
+
+  },
+  card:{
+    padding: "20px",
+    maxWidth:"700px",
+    margin:"10px auto",
+    height:"100%"
   },
   quoteContainer: {
     [theme.breakpoints.down('md')]: {
@@ -98,6 +109,9 @@ const useStyles = makeStyles(theme => createStyles({
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
     }
+  },
+  cardContent:{
+    
   },
   form: {
     paddingLeft: 100,
@@ -193,12 +207,13 @@ const Login=()=>{
       errors: errors || {}
     }));
   }, [formState.values]);
-  useEffect(()=>{
-    if(oauthProvider)
-    {
-    PostData()
+  useEffect(()=>{  
+    if(formState.values.oauthProvider){
+      console.log('ok')
+      handleSignIn();
     }
-  },[oauthProvider])
+  },[formState.values.oauthProvider])
+
   const PostData=(email,password)=>{
     fetch("/signin",{
       method:"post",
@@ -235,12 +250,20 @@ const Login=()=>{
   const responseGoogle = (response) => {
     console.log(response.profileObj)
     console.log(response.profileObj.email,response.profileObj.googleId);
-      setEmail(response.profileObj.email)
-      setPassword(response.profileObj.googleId)
-      setoauthProvider('google')
+      
+      setFormState(formState=>({
+        ...formState,
+        values:{
+          ...formState.values,
+          email:response.profileObj.email,
+          password:response.profileObj.googleId,
+          oauthProvider:'google'
+        }
+      }))
+      
+
   }
-  const handleSignIn = event => {
-    event.preventDefault();
+  const handleSignIn = () => {
     setLoading(true)
     const {email,password}=formState.values
     axios.post('/signin',{
@@ -251,7 +274,14 @@ const Login=()=>{
         "Content-Type":"application/json"
       }
     }).then((response)=>{
-      console.log(response)
+        const {data}=response
+        console.log(data)
+        localStorage.setItem("jwt",data.token)
+        localStorage.setItem("user",JSON.stringify(data.user))
+        dispatch({type:"USER",payload:data.user})
+        setLoading(false)
+        history.push('/')
+
     },(error)=>{
       if(error.response.data)
       {
@@ -263,171 +293,144 @@ const Login=()=>{
         }))
       }
     })
-    
-    
   };
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
   return(
     <div className={classes.root}>
-      <Grid
-        className={classes.grid}
-        container
-      >
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
-          <div className={classes.quote}>
-            <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h1"
-              >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
-              </Typography>
-              <div className={classes.person}>
-                <Typography
-                  className={classes.name}
-                  variant="body1"
-                >
-                  Takamaru Ayako
-                </Typography>
-                <Typography
-                  className={classes.bio}
-                  variant="body2"
-                >
-                  Manager at inVision
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </Grid>
-        <Grid
-          className={classes.content}
-          item
-          lg={7}
-          xs={12}
-        >
-          <div className={classes.content}>
-            <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div>
-            <div className={classes.contentBody}>
-              <form
-                className={classes.form}
-                onSubmit={handleSignIn}
-              >
-                <Typography
-                  className={classes.title}
-                  variant="h2"
-                >
-                  Sign in
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Sign in with social media
-                </Typography>
-                <Grid
-                  className={classes.socialButtons}
-                  container
-                  spacing={2}
-                >
-                  <Grid item>
-                    <Button
-                      color="primary"
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
-                </Typography>
-                <TextField
-                  className={classes.textField}
-                  error={hasError('email')}
-                  fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
-                  label="Email address"
-                  name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
-                
-                <Button
-                  className={classes.signInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                {loading && <CircularProgress className={classes.CircularProgress}/>}
-                  Sign in now
-                </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don't have an account?{' '}
-                  <Link
-                    
-                    to="/sign-up"
-                    variant="h6"
+        <Card className={classes.card} variant="outlined">
+              <div className={classes.content}>
+                <div className={classes.contentHeader}>
+                  <IconButton onClick={handleBack}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                </div>
+                <div className={classes.contentBody}>
+                  <form
+                    className={classes.form}
                   >
-                    Sign up
-                  </Link>
-                </Typography>
-              </form>
-            </div>
-          </div>
-        </Grid>
-      </Grid>
+                    <Typography
+                      className={classes.title}
+                      variant="h2"
+                    >
+                      Socio
+                    </Typography>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                    >
+                      One step towards colloboration
+                    </Typography>
+                    <Grid
+                      className={classes.socialButtons}
+                      container
+                      spacing={2}
+                    >
+                      <Grid item>
+                        <Button
+                          color="primary"
+                          size="large"
+                          variant="contained"
+                          
+                        >
+                          
+                          {`Login with Facebook`}   
+                        </Button>
+                      </Grid>
+            
+                      <Grid item>
+                      <GoogleLogin
+                              clientId="1090694937783-469boou87u6gjjk0eflqeh513qnhugog.apps.googleusercontent.com"
+                              onSuccess={responseGoogle}
+                              onFailure={responseGoogle}
+                              cookiePolicy={'single_host_origin'}
+                          >         
+                              <span style={{color:"black"}}>{`Login with Google`}</span><span style={{marginLeft:"50px"}}></span>
+                              <span></span>
+                      </GoogleLogin>
+                      </Grid>
+                    </Grid>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary"
+                      variant="body1"
+                    >
+                      or SignIn with email address
+                    </Typography>
+                    <TextField
+                      className={classes.textField}
+                      error={hasError('email')}
+                      fullWidth
+                      helperText={
+                        hasError('email') ? formState.errors.email[0] : null
+                      }
+                      label="Email address"
+                      name="email"
+                      onChange={handleChange}
+                      type="text"
+                      value={formState.values.oauthProvider?'':formState.values.email || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasError('password')}
+                      fullWidth
+                      helperText={
+                        hasError('password') ? formState.errors.password[0] : null
+                      }
+                      label="Password"
+                      name="password"
+                      onChange={handleChange}
+                      type="password"
+                      value={formState.values.oauthProvider?'':formState.values.password || ''}
+                      variant="outlined"
+                    />
+                    <Typography
+                      className={classes.textField}
+                      color="textSecondary"
+                      variant="body1"
+                    >
+
+                      <Link
+                        
+                        to="/reset"
+                        variant="h6"
+                      >
+                        Forgot Password ?
+                      </Link>
+                    </Typography>
+                    
+                    <Button
+                      className={classes.signInButton}
+                      color="primary"
+                      disabled={!formState.isValid}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained"
+                      onClick={()=>handleSignIn()}
+                    >
+                    {loading && <CircularProgress className={classes.CircularProgress}/>}
+                      Sign in now
+                    </Button>
+                    <Typography
+                      color="textSecondary"
+                      variant="body1"
+                    >
+                      Don't have an account?{' '}
+                      <Link
+                        
+                        to="/register"
+                        variant="h6"
+                      >
+                        Sign up
+                      </Link>
+                    </Typography>
+                  </form>
+                </div>
+              </div>
+        </Card>
       <Snackbar
         anchorOrigin={{ vertical:'top', horizontal:'center' }}
         open={serverState.isServer}
