@@ -4,8 +4,11 @@ import M from 'materialize-css'
 import {UserContext} from '../../App'
 import GoogleLogin from 'react-google-login';
 import {makeStyles,createStyles} from '@material-ui/styles'
+import Alert from '@material-ui/lab/Alert';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import axios from 'axios'
 //import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import Snackbar from '@material-ui/core/Snackbar';
 import validate from 'validate.js'
 
 import {
@@ -131,13 +134,22 @@ const Login=()=>{
   const [password,setPassword]=useState('')
   const [email,setEmail]=useState('')
   const [oauthProvider,setoauthProvider]=useState(undefined)
+  const [serverState,setServerState]=useState({
+    isServer:false,
+    message:''
+  })
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {}
   });
-
+  const handleClose = () => {
+    setServerState(serverState=>({
+      isServer:false,
+      message:''
+    }))
+  };
   const handleChange = event => {
     event.persist();
 
@@ -156,7 +168,6 @@ const Login=()=>{
       }
     }));
   };
-
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -182,7 +193,7 @@ const Login=()=>{
     PostData()
     }
   },[oauthProvider])
-  const PostData=(e)=>{
+  const PostData=(email,password)=>{
     fetch("/signin",{
       method:"post",
       headers:{
@@ -214,6 +225,7 @@ const Login=()=>{
   const handleBack = () => {
     history.goBack();
   };
+  
   const responseGoogle = (response) => {
     console.log(response.profileObj)
     console.log(response.profileObj.email,response.profileObj.googleId);
@@ -223,7 +235,28 @@ const Login=()=>{
   }
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    const {email,password}=formState.values
+    axios.post('/signin',{
+      email:email,
+      password:password
+    },{
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then((response)=>{
+      console.log(response)
+    },(error)=>{
+      if(error.response.data)
+      {
+        console.log(error.response.data.error)
+        setServerState(serverState=>({
+          isServer:true,
+          message:error.response.data.error
+        }))
+      }
+    })
+    
+    
   };
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
@@ -385,6 +418,17 @@ const Login=()=>{
           </div>
         </Grid>
       </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical:'top', horizontal:'center' }}
+        open={serverState.isServer}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        key='top center'
+      >
+        <Alert  variant="filled" severity="error">
+        {serverState.message}
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
