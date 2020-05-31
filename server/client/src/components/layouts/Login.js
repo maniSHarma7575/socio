@@ -6,6 +6,7 @@ import GoogleLogin from 'react-google-login';
 import {makeStyles,createStyles} from '@material-ui/styles'
 import Alert from '@material-ui/lab/Alert';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios'
 //import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -125,6 +126,10 @@ const useStyles = makeStyles(theme => createStyles({
   },
   signInButton: {
     margin: theme.spacing(2, 0)
+  },
+  CircularProgress:{
+    textAlign:"center",
+    color:theme.palette.white
   }
 }));
 const Login=()=>{
@@ -138,6 +143,7 @@ const Login=()=>{
     isServer:false,
     message:''
   })
+  const [loading,setLoading]=useState(false)
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
@@ -235,6 +241,7 @@ const Login=()=>{
   }
   const handleSignIn = event => {
     event.preventDefault();
+    setLoading(true)
     const {email,password}=formState.values
     axios.post('/signin',{
       email:email,
@@ -249,6 +256,7 @@ const Login=()=>{
       if(error.response.data)
       {
         console.log(error.response.data.error)
+        setLoading(false)
         setServerState(serverState=>({
           isServer:true,
           message:error.response.data.error
@@ -389,6 +397,7 @@ const Login=()=>{
                   value={formState.values.password || ''}
                   variant="outlined"
                 />
+                
                 <Button
                   className={classes.signInButton}
                   color="primary"
@@ -398,6 +407,7 @@ const Login=()=>{
                   type="submit"
                   variant="contained"
                 >
+                {loading && <CircularProgress className={classes.CircularProgress}/>}
                   Sign in now
                 </Button>
                 <Typography
@@ -429,6 +439,7 @@ const Login=()=>{
         {serverState.message}
         </Alert>
       </Snackbar>
+      
     </div>
   )
 }
