@@ -1,21 +1,21 @@
 import React,{useContext} from 'react';
 import { Route,Redirect } from 'react-router-dom';
 import {UserContext} from '../../App'
-const RouteWithLayout = props => {
+const PrivateRouteWithLayout = props => {
+    const {state,dispatch}=useContext(UserContext)
   const { layout: Layout, component: Component, ...rest } = props;
-  const {state,dispatch}=useContext(UserContext)
   return (
-    state?<Redirect to='/dashboard' />:<Route
+    state?<Route
       {...rest}
       render={matchProps => (
         <Layout>
           <Component {...matchProps} />
         </Layout>
       )}
-    />
+    />:<Redirect to='/login' />
   );
 };
 
 
 
-export default RouteWithLayout;
+export default PrivateRouteWithLayout;

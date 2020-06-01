@@ -1,7 +1,6 @@
-import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
-
-import { RouteWithLayout } from './components';
+import { Switch, Redirect ,useHistory} from 'react-router-dom';
+import React,{useContext, createContext,useReducer,useEffect} from "react";
+import { RouteWithLayout, NotFoundRoute } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {Dashboard} from './views'
@@ -10,9 +9,26 @@ import {NotFound} from './views'
 import {SignUp} from './views'
 import {NewPassword} from './views'
 import {ResetPassword} from './views'
+import {PrivateRouteWithLayout} from './components'
 import {reducer,initialState} from './reducers/userReducers'
-
+import {UserContext} from './App'
 const Routes = () => {
+    const history=useHistory()
+    const {state,dispatch}=useContext(UserContext)
+      useEffect(() => {
+        
+        const user=JSON.parse(localStorage.getItem('user'))
+        console.log(user)
+        if(user)
+        {
+            dispatch({type:"USER",payload:user})
+          
+        }
+        else{
+            if(!history.location.pathname.startsWith('/reset'))
+                history.push('/login')
+        }
+    }, [])
   return (
     <Switch>
       <Redirect
@@ -20,7 +36,7 @@ const Routes = () => {
         from="/"
         to="/dashboard"
       />
-      <RouteWithLayout
+      <PrivateRouteWithLayout
         component={Dashboard}
         exact
         layout={MainLayout}
@@ -51,7 +67,7 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/reset"
       />
-      <RouteWithLayout
+      <NotFoundRoute
         component={NotFound}
         exact
         layout={MinimalLayout}
