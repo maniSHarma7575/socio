@@ -141,8 +141,6 @@ const LatestOrders = props => {
   );
 };
 
-LatestOrders.propTypes = {
-  className: PropTypes.string
-};
+
 
 export default LatestOrders;

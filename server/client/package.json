@@ -30,6 +30,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "recompose": "^0.30.0",
+    "theme": "^0.1.0",
     "underscore": "^1.10.2",
     "uuid": "^8.1.0",
     "validate.js": "^0.13.1"
