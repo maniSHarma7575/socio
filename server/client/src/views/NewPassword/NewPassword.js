@@ -1,5 +1,5 @@
 import React,{useState,useContext, useEffect} from 'react'
-import { Link,useHistory } from "react-router-dom";
+import { Link,useHistory,useParams} from "react-router-dom";
 import {UserContext} from '../../App'
 import GoogleLogin from 'react-google-login';
 import {makeStyles,createStyles} from '@material-ui/styles'
@@ -20,14 +20,6 @@ import {
 } from '@material-ui/core';
 
 const schema = {
-  
-  email: {
-    presence: { allowEmpty: false, message: 'is required' },
-    email: true,
-    length: {
-      maximum: 64
-    }
-  },
   password: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
@@ -35,6 +27,7 @@ const schema = {
     }
   }
 };
+
 const useStyles = makeStyles(theme => createStyles({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -47,7 +40,7 @@ const useStyles = makeStyles(theme => createStyles({
   card:{
     padding: "20px",
     maxWidth:"700px",
-    margin:"10px auto",
+    margin:"50px auto",
     
   },
   quoteContainer: {
@@ -139,8 +132,10 @@ const useStyles = makeStyles(theme => createStyles({
     color:theme.palette.white
   }
 }));
-const Login=()=>{
+
+const NewPassword=()=>{
   const classes = useStyles();
+  const {token}=useParams()
   const {state,dispatch}=useContext(UserContext)
   const history=useHistory()
   const [serverState,setServerState]=useState({
@@ -186,45 +181,22 @@ const Login=()=>{
     }));
   }, [formState.values]);
 
-  useEffect(()=>{  
-    if(formState.values.oauthProvider){
-      console.log('ok')
-      handleSignIn();
-    }
-  },[formState.values.oauthProvider])
-
   const handleBack = () => {
     history.goBack();
   };
   
-  const responseGoogle = (response) => {
-      setFormState(formState=>({
-        ...formState,
-        values:{
-          ...formState.values,
-          email:response.profileObj.email,
-          password:response.profileObj.googleId,
-          oauthProvider:'google'
-        }
-      }))
-  }
-  const handleSignIn = () => {
-    setLoading(true)
-    const {email,password}=formState.values
-    axios.post('/signin',{
-      email:email,
-      password:password
+  
+  const handlePassword=()=>{    
+    axios.post('/updatePassword',{
+      token:token,
+      password:formState.values.password
     },{
       headers:{
         "Content-Type":"application/json"
       }
     }).then((response)=>{
-        const {data}=response
-        localStorage.setItem("jwt",data.token)
-        localStorage.setItem("user",JSON.stringify(data.user))
-        dispatch({type:"USER",payload:data.user})
-        setLoading(false)
-        history.push('/')
+      setLoading(false)
+      history.push('/login')
 
     },(error)=>{
       if(error.response.data)
@@ -236,7 +208,8 @@ const Login=()=>{
         }))
       }
     })
-  };
+    
+  }
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
   return(
@@ -256,65 +229,14 @@ const Login=()=>{
                       className={classes.title}
                       variant="h2"
                     >
-                      Sign In
+                     Create new Password
                     </Typography>
                     <Typography
                       color="textSecondary"
                       gutterBottom
                     >
-                      One step towards colloboration
+                      Try to change password monthly!
                     </Typography>
-                    <Grid
-                      className={classes.socialButtons}
-                      container
-                      spacing={2}
-                    >
-                      <Grid item>
-                        <Button
-                          color="primary"
-                          size="large"
-                          variant="contained"
-                          
-                        >
-                          
-                          {`Login with Facebook`}   
-                        </Button>
-                      </Grid>
-            
-                      <Grid item>
-                      <GoogleLogin
-                              clientId="1090694937783-469boou87u6gjjk0eflqeh513qnhugog.apps.googleusercontent.com"
-                              onSuccess={responseGoogle}
-                              onFailure={responseGoogle}
-                              cookiePolicy={'single_host_origin'}
-                          >         
-                              <span style={{color:"black"}}>{`Login with Google`}</span><span style={{marginLeft:"50px"}}></span>
-                              <span></span>
-                      </GoogleLogin>
-                      </Grid>
-                    </Grid>
-                    <Typography
-                      align="center"
-                      className={classes.sugestion}
-                      color="textSecondary"
-                      variant="body1"
-                    >
-                      or SignIn with email address
-                    </Typography>
-                    <TextField
-                      className={classes.textField}
-                      error={hasError('email')}
-                      fullWidth
-                      helperText={
-                        hasError('email') ? formState.errors.email[0] : null
-                      }
-                      label="Email address"
-                      name="email"
-                      onChange={handleChange}
-                      type="text"
-                      value={formState.values.oauthProvider?'':formState.values.email || ''}
-                      variant="outlined"
-                    />
                     <TextField
                       className={classes.textField}
                       error={hasError('password')}
@@ -329,21 +251,6 @@ const Login=()=>{
                       value={formState.values.oauthProvider?'':formState.values.password || ''}
                       variant="outlined"
                     />
-                    <Typography
-                      className={classes.textField}
-                      color="textSecondary"
-                      variant="body1"
-                    >
-
-                      <Link
-                        
-                        to="/reset"
-                        variant="h6"
-                      >
-                        Forgot Password ?
-                      </Link>
-                    </Typography>
-                    
                     <Button
                       className={classes.signInButton}
                       color="primary"
@@ -351,24 +258,11 @@ const Login=()=>{
                       fullWidth
                       size="large"
                       variant="contained"
-                      onClick={()=>handleSignIn()}
+                      onClick={()=>handlePassword()}
                     >
                     {loading && <CircularProgress className={classes.CircularProgress}/>}
-                      Sign in now
+                      Update Password
                     </Button>
-                    <Typography
-                      color="textSecondary"
-                      variant="body1"
-                    >
-                      Don't have an account?{' '}
-                      <Link
-                        
-                        to="/register"
-                        variant="h6"
-                      >
-                        Sign up
-                      </Link>
-                    </Typography>
                   </form>
                 </div>
               </div>
@@ -389,4 +283,4 @@ const Login=()=>{
   )
 }
 
-export default Login
+export default NewPassword

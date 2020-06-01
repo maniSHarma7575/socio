@@ -22,6 +22,12 @@ import {
 } from '@material-ui/core';
 
 const schema = {
+  name: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
   email: {
     presence: { allowEmpty: false, message: 'is required' },
     email: true,
@@ -201,16 +207,10 @@ const SignUp=()=>{
     }));
   }, [formState.values]);
 
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
-  }, [formState.values]);
+  
   useEffect(()=>{  
     if(formState.values.oauthProvider){
+      console.log('okay')
       handleSignUp();
     }
   },[formState.values.oauthProvider])
@@ -220,33 +220,34 @@ const SignUp=()=>{
   };
   
   const responseGoogle = (response) => {
+    console.log(response)
       setFormState(formState=>({
         ...formState,
         values:{
           ...formState.values,
           email:response.profileObj.email,
           password:response.profileObj.googleId,
-          oauthProvider:'google'
+          oauthProvider:'google',
+          name:response.profileObj.name
         }
       }))
   }
   const handleSignUp = () => {
     setLoading(true)
-    const {email,password}=formState.values
-    axios.post('/signin',{
+    const {name,email,password,oauthProvider}=formState.values
+    axios.post('/signup',{
       email:email,
-      password:password
+      name:name,
+      password:password,
+      photo:'',
+      oauthProvider:oauthProvider?oauthProvider:''
     },{
       headers:{
         "Content-Type":"application/json"
       }
     }).then((response)=>{
-        const {data}=response
-        localStorage.setItem("jwt",data.token)
-        localStorage.setItem("user",JSON.stringify(data.user))
-        dispatch({type:"USER",payload:data.user})
         setLoading(false)
-        history.push('/')
+        history.push('/login')
 
     },(error)=>{
       if(error.response.data)

@@ -10,8 +10,8 @@ import CreatePost from "./views/Social/CreatePost/CreatePost"
 import UserProfile from "./views/Social/UserProfile/UserProfile"
 import SubscribePosts from "./views/Social/SubscribePosts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
-import ResetPassword from "./views/Password/Reset/Reset";
-import NewPassword from "./views/Password/NewPassword/NewPassword";
+import ResetPassword from "./views/Reset/Reset";
+import NewPassword from "./views/NewPassword/NewPassword";
 import Routes from './Routes';
 import './assets/scss/index.scss';
 import validate from 'validate.js';
