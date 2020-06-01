@@ -14,6 +14,8 @@ import ResetPassword from "./views/Password/Reset/Reset";
 import NewPassword from "./views/Password/NewPassword/NewPassword";
 import Routes from './Routes';
 import './assets/scss/index.scss';
+import validate from 'validate.js';
+import validators from './common/validators';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './theme';
 const browserHistory = createBrowserHistory();
@@ -47,6 +49,10 @@ const Routing=()=>{
         </Switch>
     )
 }
+validate.validators = {
+    ...validate.validators,
+    ...validators
+  };
 function App() {
     const [state,dispatch]=useReducer(reducer,initialState)
     return (

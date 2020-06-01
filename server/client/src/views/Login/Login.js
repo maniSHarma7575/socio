@@ -20,6 +20,12 @@ import {
 } from '@material-ui/core';
 
 const schema = {
+  name: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
   email: {
     presence: { allowEmpty: false, message: 'is required' },
     email: true,
@@ -36,7 +42,7 @@ const schema = {
 };
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    backgroundColor: theme.palette.white,
+    backgroundColor: theme.palette.background.default,
     height: '100%'
   },
   grid: {
@@ -47,7 +53,7 @@ const useStyles = makeStyles(theme => createStyles({
     padding: "20px",
     maxWidth:"700px",
     margin:"10px auto",
-    height:"100%"
+    
   },
   quoteContainer: {
     [theme.breakpoints.down('md')]: {
