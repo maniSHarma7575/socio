@@ -1,18 +1,13 @@
 import React,{useState,useContext, useEffect} from 'react'
 import { Link,useHistory } from "react-router-dom";
-import M from 'materialize-css'
-import {UserContext} from '../../App'
+import {UserContext} from '../App'
 import GoogleLogin from 'react-google-login';
 import {makeStyles,createStyles} from '@material-ui/styles'
 import Alert from '@material-ui/lab/Alert';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-//import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 import Snackbar from '@material-ui/core/Snackbar';
 import validate from 'validate.js'
 
@@ -110,9 +105,6 @@ const useStyles = makeStyles(theme => createStyles({
       justifyContent: 'center'
     }
   },
-  cardContent:{
-    
-  },
   form: {
     paddingLeft: 100,
     paddingRight: 100,
@@ -150,9 +142,6 @@ const Login=()=>{
   const classes = useStyles();
   const {state,dispatch}=useContext(UserContext)
   const history=useHistory()
-  const [password,setPassword]=useState('')
-  const [email,setEmail]=useState('')
-  const [oauthProvider,setoauthProvider]=useState(undefined)
   const [serverState,setServerState]=useState({
     isServer:false,
     message:''
@@ -172,7 +161,6 @@ const Login=()=>{
   };
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -190,7 +178,6 @@ const Login=()=>{
   };
   useEffect(() => {
     const errors = validate(formState.values, schema);
-
     setFormState(formState => ({
       ...formState,
       isValid: errors ? false : true,
@@ -200,7 +187,6 @@ const Login=()=>{
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
-
     setFormState(formState => ({
       ...formState,
       isValid: errors ? false : true,
@@ -214,43 +200,11 @@ const Login=()=>{
     }
   },[formState.values.oauthProvider])
 
-  const PostData=(email,password)=>{
-    fetch("/signin",{
-      method:"post",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email:email,
-        password:password
-      })
-    }).then(res=>res.json())
-    .then(data=>{
-      if(data.error)
-      {
-        M.toast({html: data.error,classes:"#c62828 red darken-3"})
-      }
-      else{
-        localStorage.setItem("jwt",data.token)
-        localStorage.setItem("user",JSON.stringify(data.user))
-        dispatch({type:"USER",payload:data.user})
-        M.toast({html: "SignIn successfull",classes:"#00c853 green accent-4"})
-        history.push('/')
-      }
-    })
-    .catch(error=>{
-      console.log(error)
-    })
-    
-  }
   const handleBack = () => {
     history.goBack();
   };
   
   const responseGoogle = (response) => {
-    console.log(response.profileObj)
-    console.log(response.profileObj.email,response.profileObj.googleId);
-      
       setFormState(formState=>({
         ...formState,
         values:{
@@ -260,8 +214,6 @@ const Login=()=>{
           oauthProvider:'google'
         }
       }))
-      
-
   }
   const handleSignIn = () => {
     setLoading(true)
@@ -275,7 +227,6 @@ const Login=()=>{
       }
     }).then((response)=>{
         const {data}=response
-        console.log(data)
         localStorage.setItem("jwt",data.token)
         localStorage.setItem("user",JSON.stringify(data.user))
         dispatch({type:"USER",payload:data.user})
@@ -285,7 +236,6 @@ const Login=()=>{
     },(error)=>{
       if(error.response.data)
       {
-        console.log(error.response.data.error)
         setLoading(false)
         setServerState(serverState=>({
           isServer:true,
@@ -407,7 +357,6 @@ const Login=()=>{
                       disabled={!formState.isValid}
                       fullWidth
                       size="large"
-                      type="submit"
                       variant="contained"
                       onClick={()=>handleSignIn()}
                     >

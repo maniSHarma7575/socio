@@ -1,19 +1,22 @@
 import React,{useContext, createContext,useReducer,useEffect} from "react";
+import { createBrowserHistory } from 'history';
 import Navbar from './components/Navbar'
-import {BrowserRouter,Route, Switch,useHistory} from 'react-router-dom'
-import Home from "./components/layouts/Home";
-import Login from "./components/layouts/Login";
-import SignUp from "./components/layouts/SignUp";
-import Profile from "./components/layouts/Profile";
-import CreatePost from "./components/layouts/CreatePost"
-import UserProfile from "./components/layouts/UserProfile"
-import SubscribePosts from "./components/layouts/SubscribePosts"
+import {Router,Route, Switch,useHistory} from 'react-router-dom'
+import Home from "./views/Social/Home/Home";
+import Login from "./views/Login/Login";
+import SignUp from "./views/SignUp/SignUp";
+import Profile from "./views/Social/Profile/Profile";
+import CreatePost from "./views/Social/CreatePost/CreatePost"
+import UserProfile from "./views/Social/UserProfile/UserProfile"
+import SubscribePosts from "./views/Social/SubscribePosts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
-import ResetPassword from "./components/layouts/Reset";
-import NewPassword from "./components/layouts/NewPassword";
+import ResetPassword from "./views/Password/Reset/Reset";
+import NewPassword from "./views/Password/NewPassword/NewPassword";
+import Routes from './Routes';
 import './assets/scss/index.scss';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './theme';
+const browserHistory = createBrowserHistory();
 export const UserContext=createContext()
 const Routing=()=>{
     const history=useHistory()
@@ -48,12 +51,11 @@ function App() {
     const [state,dispatch]=useReducer(reducer,initialState)
     return (
         <ThemeProvider theme={theme}>
-        <UserContext.Provider value={{state:state,dispatch:dispatch}}>
-        <BrowserRouter>
-        <Navbar/>
-        <Routing />
-        </BrowserRouter>
-        </UserContext.Provider>
+            <UserContext.Provider value={{state:state,dispatch:dispatch}}>
+                <Router history={browserHistory}>
+                    <Routes/>
+                </Router>
+            </UserContext.Provider>
         </ThemeProvider>
     )
 }

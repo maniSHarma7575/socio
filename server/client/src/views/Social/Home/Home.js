@@ -1,5 +1,5 @@
 import React, { useEffect,useState,useContext } from 'react'
-import {UserContext} from '../../App'
+import {UserContext} from '../../../App'
 import {Link} from 'react-router-dom'
 const Home=()=>{
   const {state,dispatch}=useContext(UserContext)
@@ -7,13 +7,14 @@ const Home=()=>{
   const [com,setCom]=useState('')
   useEffect(()=>{
     
-      fetch('/mysubpost',{
+      fetch('/allpost',{
         headers:{
           Authorization:"Bearer "+localStorage.getItem("jwt")
         }
       }).then(res=>res.json())
       .then(result=>{
         console.log(result)
+        console.log(state)
         setData(result.result)
       })
   },[])
@@ -153,7 +154,7 @@ const Home=()=>{
                 {
                   item.comments.map(comment=>{
                     return(
-                      <h6 key={comment._id}><span style={{fontWeight:"500"}}>{comment.postedBy.name}</span>{comment.text}</h6>
+                      <h6 key={comment._id}><span style={{fontWeight:"500"}}>{comment.postedBy.name} </span>{comment.text}</h6>
                     )
                   })
                 }
