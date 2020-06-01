@@ -136,7 +136,6 @@ const useStyles = makeStyles(theme => createStyles({
 const NewPassword=()=>{
   const classes = useStyles();
   const {token}=useParams()
-  const {state,dispatch}=useContext(UserContext)
   const history=useHistory()
   const [serverState,setServerState]=useState({
     isServer:false,
@@ -187,6 +186,7 @@ const NewPassword=()=>{
   
   
   const handlePassword=()=>{    
+    setLoading(true)
     axios.post('/updatePassword',{
       token:token,
       password:formState.values.password

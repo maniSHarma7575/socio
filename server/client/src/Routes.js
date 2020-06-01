@@ -9,7 +9,7 @@ import {Login} from './views'
 import {NotFound} from './views'
 import {SignUp} from './views'
 import {NewPassword} from './views'
-
+import {ResetPassword} from './views'
 import {reducer,initialState} from './reducers/userReducers'
 
 const Routes = () => {
@@ -44,6 +44,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/reset/:token"
+      />
+      <RouteWithLayout
+        component={ResetPassword}
+        exact
+        layout={MinimalLayout}
+        path="/reset"
       />
       <RouteWithLayout
         component={NotFound}

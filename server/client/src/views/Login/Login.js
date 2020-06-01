@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => createStyles({
   card:{
     padding: "20px",
     maxWidth:"700px",
-    margin:"10px auto",
+    margin:"50px auto",
     
   },
   quoteContainer: {
