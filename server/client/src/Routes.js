@@ -2,7 +2,6 @@ import { Switch, Redirect ,useHistory} from 'react-router-dom';
 import React,{useContext, createContext,useReducer,useEffect} from "react";
 import { RouteWithLayout, NotFoundRoute } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
-
 import {Dashboard} from './views'
 import {Login} from './views'
 import {NotFound} from './views'
@@ -18,7 +17,6 @@ const Routes = () => {
       useEffect(() => {
         
         const user=JSON.parse(localStorage.getItem('user'))
-        console.log(user)
         if(user)
         {
             dispatch({type:"USER",payload:user})
