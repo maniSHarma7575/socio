@@ -21,7 +21,7 @@ import { Rating } from '@material-ui/lab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Users as UsersIcon } from 'react-feather';
-import getInitials from 'src/utils/getInitials';
+import getInitials from '../../../../utils/getInitials';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

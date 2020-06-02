@@ -6,9 +6,9 @@ import React, {
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Grid, makeStyles } from '@material-ui/core';
-import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import ProjectCard from 'src/components/ProjectCard';
+import axios from '../../../../../src/utils/axios';
+import useIsMountedRef from '../../../../../src/hooks/useIsMountedRef';
+import ProjectCard from './ProjectCard';
 
 const useStyles = makeStyles(() => ({
   root: {}

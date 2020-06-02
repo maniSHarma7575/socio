@@ -28,8 +28,8 @@ import {
   Search as SearchIcon,
   MoreVertical as MoreIcon
 } from 'react-feather';
-import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import axios from '../../../../src/utils/axios';
+import useIsMountedRef from '../../../../src/hooks/useIsMountedRef';
 
 const connectStatusMap = {
   not_connected: 'Connect',

@@ -8,6 +8,7 @@ import {NotFound} from './views'
 import {SignUp} from './views'
 import {NewPassword} from './views'
 import {ResetPassword} from './views'
+import {ProfileView} from './views'
 import {PrivateRouteWithLayout} from './components'
 import {reducer,initialState} from './reducers/userReducers'
 import {UserContext} from './App'
@@ -39,6 +40,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
+      />
+      <PrivateRouteWithLayout
+        component={ProfileView}
+        exact
+        layout={MainLayout}
+        path="/profile"
       />
       
       <RouteWithLayout

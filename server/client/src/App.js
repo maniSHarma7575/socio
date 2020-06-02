@@ -2,13 +2,13 @@ import React,{useContext, createContext,useReducer,useEffect} from "react";
 import { createBrowserHistory } from 'history';
 import Navbar from './components/Navbar'
 import {Router,Route, Switch,useHistory} from 'react-router-dom'
-import Home from "./views/Social/Home/Home";
+import Home from "./views/Soscial/Home/Home";
 import Login from "./views/Login/Login";
 import SignUp from "./views/SignUp/SignUp";
-import Profile from "./views/Social/Profile/Profile";
-import CreatePost from "./views/Social/CreatePost/CreatePost"
-import UserProfile from "./views/Social/UserProfile/UserProfile"
-import SubscribePosts from "./views/Social/SubscribePosts/SubscribePosts"
+import Profile from "./views/Soscial/Profile/Profile";
+import CreatePost from "./views/Soscial/CreatePost/CreatePost"
+import UserProfile from "./views/Soscial/UserProfile/UserProfile"
+import SubscribePosts from "./views/Soscial/SubscribePosts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
 import ResetPassword from "./views/Reset/Reset";
 import NewPassword from "./views/NewPassword/NewPassword";

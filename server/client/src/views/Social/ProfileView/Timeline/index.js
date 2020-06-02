@@ -10,10 +10,10 @@ import {
   Grid,
   makeStyles
 } from '@material-ui/core';
-import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import PostAdd from 'src/components/PostAdd';
-import PostCard from 'src/components/PostCard';
+import axios from '../../../../../src/utils/axios';
+import useIsMountedRef from '../../../../../src/hooks/useIsMountedRef';
+import PostAdd from '../../../../../src/components/PostAdd';
+import PostCard from '../../../../../src/components/PostCard';
 import About from './About';
 
 const useStyles = makeStyles(() => ({
