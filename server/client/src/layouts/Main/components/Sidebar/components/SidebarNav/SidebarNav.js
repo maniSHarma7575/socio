@@ -79,11 +79,11 @@ const SidebarNav = props => {
     >
       {pages.map(page => (
         page.nested?
-        <div key={page.title}>
+        <div key={page.key}>
         <ListItem 
         className={classes.item}
         disableGutters
-        key={page.title}
+        key={page.key}
         button onClick={handleClick}>
             <Button
             className={classes.button}
@@ -95,11 +95,11 @@ const SidebarNav = props => {
             {open ? <ExpandLess className={classes.expand}/> : <ExpandMore className={classes.expand}/>}
           </Button>
         </ListItem>
-        <Collapse key={page.title} in={open} timeout="auto" unmountOnExit>
+        <Collapse  in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
             {
               page.nestedLink.map(item=>(
-              <ListItem   key={item.title} button className={classes.nested}>
+              <ListItem   key={item.key} button className={classes.nested}>
               <Button
                 activeClassName={classes.active}
                 className={classes.button}
@@ -119,7 +119,7 @@ const SidebarNav = props => {
         <ListItem
           className={classes.item}
           disableGutters
-          key={page.title}
+          key={page.key}
         >
           <Button
             activeClassName={classes.active}

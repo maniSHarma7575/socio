@@ -49,55 +49,65 @@ const Sidebar = props => {
     {
       title: 'Dashboard',
       href: '/dashboard',
-      icon: <DashboardIcon />
+      icon: <DashboardIcon />,
+      key:1
     },
     {
       title: 'Social Platform',
       href: '/login',
       icon: <GroupIcon />,
       nested:true,
+      key:2,
       nestedLink:[
         {
           title: 'Profile',
           href:'/profile',
-          icon: <PersonIcon />
+          icon: <PersonIcon />,
+          key:3
         },
         {
           title: 'Feed',
           href:'/feed',
-          icon: <PublicIcon />
+          icon: <PublicIcon />,
+          key:4
         }
       ]
     },
     {
       title: 'Products',
       href: '/products',
-      icon: <ShoppingBasketIcon />
+      icon: <ShoppingBasketIcon />,
+      key:5
     },
     {
       title: 'Authentication',
       href: '/sign-in',
-      icon: <LockOpenIcon />
+      icon: <LockOpenIcon />,
+      key:6
     },
     {
       title: 'Typography',
       href: '/typography',
-      icon: <TextFieldsIcon />
+      icon: <TextFieldsIcon />,
+      key:7
     },
     {
       title: 'Icons',
       href: '/icons',
-      icon: <ImageIcon />
+      icon: <ImageIcon />,
+      key:8
     },
     {
       title: 'Account',
       href: '/account',
-      icon: <AccountBoxIcon />
+      icon: <AccountBoxIcon />,
+      key:9
     },
     {
       title: 'Settings',
       href: '/settings',
-      icon: <SettingsIcon />
+      icon: <SettingsIcon />,
+      key:10
     }
   ];
 

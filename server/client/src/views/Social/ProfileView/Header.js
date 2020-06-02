@@ -80,7 +80,7 @@ function Header({
   const [connectedStatus, setConnectedStatus] = useState(user.connectedStatus);
 
   const handleConnectToggle = () => {
-    setConnectedStatus((prevConnectedStatus) => (prevConnectedStatus === 'not_connected' ? 'pending' : 'not_connected'));
+    setCoDevashishnnectedStatus((prevConnectedStatus) => (prevConnectedStatus === 'not_connected' ? 'pending' : 'not_connected'));
   };
 
   return (
