@@ -5,12 +5,15 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
+import GroupIcon from '@material-ui/icons/Group';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PersonIcon from '@material-ui/icons/Person';
+import PublicIcon from '@material-ui/icons/Public';
 
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
@@ -49,9 +52,22 @@ const Sidebar = props => {
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
+      title: 'Social Platform',
       href: '/login',
-      icon: <PeopleIcon />
+      icon: <GroupIcon />,
+      nested:true,
+      nestedLink:[
+        {
+          title: 'Profile',
+          href:'/profile',
+          icon: <PersonIcon />
+        },
+        {
+          title: 'Feed',
+          href:'/feed',
+          icon: <PublicIcon />
+        }
+      ]
     },
     {
       title: 'Products',

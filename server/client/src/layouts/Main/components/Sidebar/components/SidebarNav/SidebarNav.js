@@ -6,6 +6,13 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import StarBorder from '@material-ui/icons/StarBorder';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -37,6 +44,12 @@ const useStyles = makeStyles(theme => ({
     '& $icon': {
       color: theme.palette.primary.main
     }
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+  expand:{
+    marginLeft: theme.spacing(2)
   }
 }));
 
@@ -53,13 +66,56 @@ const SidebarNav = props => {
   const { pages, className, ...rest } = props;
 
   const classes = useStyles();
+ 
+  const [open, setOpen] = React.useState(false);
 
+  const handleClick = () => {
+    setOpen(!open);
+  };
   return (
     <List
       {...rest}
       className={clsx(classes.root, className)}
     >
       {pages.map(page => (
+        page.nested?
+        <div key={page.title}>
+        <ListItem 
+        className={classes.item}
+        disableGutters
+        key={page.title}
+        button onClick={handleClick}>
+            <Button
+            className={classes.button}
+            component={CustomRouterLink}
+            to="#"
+          >
+            <div className={classes.icon}>{page.icon}</div>
+            {page.title}  
+            {open ? <ExpandLess className={classes.expand}/> : <ExpandMore className={classes.expand}/>}
+          </Button>
+        </ListItem>
+        <Collapse key={page.title} in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+            {
+              page.nestedLink.map(item=>(
+              <ListItem   key={item.title} button className={classes.nested}>
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={item.href}
+              >
+                  <div className={classes.icon}>{item.icon}</div>
+                  {item.title}
+              </Button>
+              </ListItem>
+              ))
+            }
+            </List>
+        </Collapse>
+        </div>
+        :
         <ListItem
           className={classes.item}
           disableGutters

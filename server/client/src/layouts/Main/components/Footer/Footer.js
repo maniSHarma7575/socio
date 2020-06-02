@@ -24,16 +24,15 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://devias.io/"
+          href="https://www.linkedin.com/in/manish-sharma-694263157/"
           target="_blank"
         >
-          Devias IO
+          Socio
         </Link>
-        . 2019
+        . 2020
       </Typography>
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together in offices!
+        We build smiles.By designers and developers who love to work together in offices.
       </Typography>
     </div>
   );
