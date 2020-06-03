@@ -81,6 +81,16 @@ router.put('/updatephoto',requireLogin,(req,res)=>{
       res.json(result)
     })
 })
+router.put('/updatecover',requireLogin,(req,res)=>{
+  User.findByIdAndUpdate(req.user._id,{$set:{cover:req.body.cover}},{new:true},
+    (err,result)=>{
+      if(err)
+      {
+        return res.status(422).json({error:"Cover cannot be updated"})
+      }
+      res.json(result)
+    })
+})
 
 router.post('/searchUser',requireLogin,(req,res)=>{
   let userPattern=new RegExp("^"+req.body.query)

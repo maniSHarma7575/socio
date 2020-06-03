@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useState,
+  useContext,
   useEffect
 } from 'react';
 import {
@@ -20,7 +21,7 @@ import Connections from './Connections';
 import Projects from './Projects';
 import Reviews from './Reviews';
 import {useParams} from 'react-router-dom'
-
+import {UserContext} from '../../../App'
 const tabs = [
   { value: 'timeline', label: 'Timeline' },
   { value: 'connections', label: 'Connections' },
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ProfileView() {
+  const {state,dispatch}=useContext(UserContext)
   const {userid}=useParams()
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();

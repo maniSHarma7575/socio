@@ -1,7 +1,8 @@
-import React, { useState ,useContext,useRef} from 'react';
+import React, { useState ,useContext,useRef, useEffect} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import axios from 'axios'
 import {
   Avatar,
   Box,
@@ -79,6 +80,7 @@ function Header({
   user,
   ...rest
 }) {
+  const [image,setImage]=useState('')
   const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
   const fileInputRefHeader = useRef(null);
@@ -86,8 +88,48 @@ function Header({
   const handleConnectToggle = () => {
     setConnectedStatus((prevConnectedStatus) => (prevConnectedStatus === true ? false : true));
   };
+  useEffect(()=>{
+    if(image)
+    {
+      const data=new FormData()
+      data.append("file",image)
+      data.append("upload_preset","socio-clone")
+      data.append("cloud_name","socio")
+      fetch("https://api.cloudinary.com/v1_1/socio/image/upload",{
+        method:"post",
+        body:data
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        axios.put('/updatecover',{
+            cover:data.url
+        },{
+          headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+          }
+        }).then((response)=>{
+            const {data}=response
+            console.log(data)
+            localStorage.setItem("user",JSON.stringify({
+              ...state,cover:data.cover
+            }))
+            dispatch({type:"UPDATECOVER",payload:data.cover})
+        },(error)=>{
+            console.log(error)
+        })
+        })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
+
+  },[image])
   const handleAttach = () => {
     fileInputRefHeader.current.click();
+    console.log(fileInputRefHeader.current.files[0])
+    setImage(fileInputRefHeader.current.files[0])
   };
   return (
     <div
@@ -96,7 +138,7 @@ function Header({
     >
       <div
         className={classes.cover}
-        style={{ backgroundImage: `url(${user.cover})` }}
+        style={{ backgroundImage: `url(${state._id==user._id?state.cover:user.cover})` }}
       >
         <Button
           className={classes.changeButton}
@@ -110,6 +152,7 @@ function Header({
             className={classes.fileInput}
             ref={fileInputRefHeader}
             type="file"
+            accept="image/x-png,image/gif,image/jpeg,image/jpg"
           />
       </div>
       <Container maxWidth="lg">
@@ -122,20 +165,20 @@ function Header({
           <Avatar
             alt="Person"
             className={classes.avatar}
-            src={user.avatar}
+            src={state._id==user._id?state.avatar:user.avatar}
           />
           <Box marginLeft="160px">
             <Typography
               variant="overline"
               color="textSecondary"
             >
-              {user.designation}
+              {state._id==user._id?state.designation:user.designation}
             </Typography>
             <Typography
               variant="h4"
               color="textPrimary"
             >
-              {user.name}
+              {state._id==user._id?state.name:user.name}
             </Typography>
           </Box>
           <Box flexGrow={1} />

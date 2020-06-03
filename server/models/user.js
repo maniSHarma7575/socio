@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     following:[{type:ObjectId,ref:"User"}],
     cover:{
         type:String,
-        default:"https://res.cloudinary.com/socio/image/upload/v1591171525/nocover_l7ja8y.jpg"
+        default:"https://res.cloudinary.com/socio/image/upload/v1591190678/wdqoycadcgjxlxtnxmmn.png"
     },
     profileProgress:{
         type:Number,
