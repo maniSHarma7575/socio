@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext,useRef} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
+import {UserContext} from '../../../App'
 const useStyles = makeStyles((theme) => ({
   root: {},
   cover: {
@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
   },
   action: {
     marginLeft: theme.spacing(1)
+  },
+  fileInput: {
+    display: 'none'
   }
 }));
 
@@ -76,13 +79,16 @@ function Header({
   user,
   ...rest
 }) {
+  const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
-  const [connectedStatus, setConnectedStatus] = useState(user.connectedStatus);
-
+  const fileInputRefHeader = useRef(null);
+  const [connectedStatus, setConnectedStatus] = useState(state?!state.following.includes(user._id):true);
   const handleConnectToggle = () => {
-    setConnectedStatus((prevConnectedStatus) => (prevConnectedStatus === 'not_connected' ? 'pending' : 'not_connected'));
+    setConnectedStatus((prevConnectedStatus) => (prevConnectedStatus === true ? false : true));
   };
-
+  const handleAttach = () => {
+    fileInputRefHeader.current.click();
+  };
   return (
     <div
       className={clsx(classes.root, className)}
@@ -95,10 +101,16 @@ function Header({
         <Button
           className={classes.changeButton}
           variant="contained"
+          onClick={handleAttach}
         >
           <AddPhotoIcon className={classes.addPhotoIcon} />
           Change Cover
         </Button>
+        <input
+            className={classes.fileInput}
+            ref={fileInputRefHeader}
+            type="file"
+          />
       </div>
       <Container maxWidth="lg">
         <Box
@@ -117,7 +129,7 @@ function Header({
               variant="overline"
               color="textSecondary"
             >
-              {user.bio}
+              {user.designation}
             </Typography>
             <Typography
               variant="h4"
@@ -128,24 +140,24 @@ function Header({
           </Box>
           <Box flexGrow={1} />
           <Hidden smDown>
-            {connectedStatus === 'not_connected' && (
+            {state._id!==user._id && connectedStatus === true && (
               <Button
                 onClick={handleConnectToggle}
                 size="small"
                 variant="outlined"
                 className={classes.action}
               >
-                Connect
+                UnFollow
               </Button>
             )}
-            {connectedStatus === 'pending' && (
+            {state._id!==user._id && connectedStatus === false && (
               <Button
                 onClick={handleConnectToggle}
                 size="small"
                 variant="outlined"
                 className={classes.action}
               >
-                Pending
+                Follow
               </Button>
             )}
             <Button
