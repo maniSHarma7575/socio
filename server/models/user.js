@@ -20,12 +20,56 @@ const userSchema = new mongoose.Schema({
     },
     resetToken:String,
     expireToken:Date,
-    photo:{
+    avatar:{
         type:String,
         default:"https://res.cloudinary.com/socio/image/upload/v1590489444/nophoto_zuge3f.jpg"
     },
+    designation:{
+        type:String,
+        default:''
+    },
     followers:[{type:ObjectId,ref:"User"}],
-    following:[{type:ObjectId,ref:"User"}]
+    following:[{type:ObjectId,ref:"User"}],
+    cover:{
+        type:String,
+        default:"https://res.cloudinary.com/socio/image/upload/v1591171525/nocover_l7ja8y.jpg"
+    },
+    profileProgress:{
+        type:Number,
+        default:0
+    },
+    quote:{
+        type:String,
+        default:''
+    },
+    previousJob:{
+        company:{
+        type:String,
+        default:''
+        },
+        title:{
+            type:String,
+            default:''
+        }
+    },
+    currentJob:{
+        company:{
+        type:String,
+        default:''
+        },
+        title:{
+            type:String,
+            default:''
+        }
+    },
+    currentCity:{
+        type:String,
+        default:''
+    },
+    originCity:{
+        type:String,
+        default:''
+    }
 })
 
 mongoose.model("User", userSchema)

@@ -45,7 +45,7 @@ const Routes = () => {
         component={ProfileView}
         exact
         layout={MainLayout}
-        path="/profile"
+        path="/profile/:userid"
       />
       
       <RouteWithLayout

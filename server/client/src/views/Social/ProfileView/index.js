@@ -19,6 +19,7 @@ import Timeline from './Timeline';
 import Connections from './Connections';
 import Projects from './Projects';
 import Reviews from './Reviews';
+import {useParams} from 'react-router-dom'
 
 const tabs = [
   { value: 'timeline', label: 'Timeline' },
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ProfileView() {
+  const {userid}=useParams()
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
   const [currentTab, setCurrentTab] = useState('timeline');
@@ -46,9 +48,14 @@ function ProfileView() {
 
   const getPosts = useCallback(() => {
     axios
-      .get('/api/social/profile')
+      .get(`/user/${userid}`,{
+        headers:{
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+        }
+      })
       .then((response) => {
         if (isMountedRef.current) {
+          console.log(response.data.user)
           setUser(response.data.user);
         }
       });

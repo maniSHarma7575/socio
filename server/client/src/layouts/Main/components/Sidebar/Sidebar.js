@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -14,8 +14,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
 import PublicIcon from '@material-ui/icons/Public';
-
 import { Profile, SidebarNav } from './components';
+import {UserContext} from '../../../../App'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
+  const {state,dispatch}=useContext(UserContext)
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
@@ -61,7 +62,7 @@ const Sidebar = props => {
       nestedLink:[
         {
           title: 'Profile',
-          href:'/profile',
+          href:`/profile/${state._id}`,
           icon: <PersonIcon />,
           key:3
         },

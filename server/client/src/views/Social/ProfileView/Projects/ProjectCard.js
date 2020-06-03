@@ -7,13 +7,14 @@ import {
   Avatar,
   Box,
   Card,
+  CardMedia,
   Divider,
   Grid,
   IconButton,
   Link,
+  SvgIcon,
   Tooltip,
   Typography,
-  CardMedia,
   colors,
   makeStyles
 } from '@material-ui/core';
@@ -21,7 +22,7 @@ import { Rating } from '@material-ui/lab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Users as UsersIcon } from 'react-feather';
-import getInitials from '../../../../utils/getInitials';
+import getInitials from '../../../../../src/utils/getInitials';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectCard({ project, className, ...rest }) {
   const classes = useStyles();
-  const [liked, setLiked] = useState(project.liked);
+  const [isLiked, setLiked] = useState(project.isLiked);
   const [likes, setLikes] = useState(project.likes);
 
   const handleLike = () => {
@@ -113,8 +114,7 @@ function ProjectCard({ project, className, ...rest }) {
           color="textSecondary"
           variant="body2"
         >
-          We&apos;re looking for experienced Developers and Product Designers to
-          come aboard and help us build succesful businesses through software.
+          {project.description}
         </Typography>
       </Box>
       <Box
@@ -179,7 +179,7 @@ function ProjectCard({ project, className, ...rest }) {
         display="flex"
         alignItems="center"
       >
-        {liked ? (
+        {isLiked ? (
           <Tooltip title="Unlike">
             <IconButton
               className={classes.likedButton}
@@ -201,7 +201,13 @@ function ProjectCard({ project, className, ...rest }) {
         >
           {likes}
         </Typography>
-        <UsersIcon size="20" className={classes.subscribersIcon} />
+        <SvgIcon
+          fontSize="small"
+          color="action"
+          className={classes.subscribersIcon}
+        >
+          <UsersIcon />
+        </SvgIcon>
         <Typography
           variant="subtitle2"
           color="textSecondary"

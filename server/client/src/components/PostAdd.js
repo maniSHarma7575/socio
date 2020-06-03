@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useContext } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import {UserContext} from '../App'
 import {
   Box,
   Card,
@@ -29,11 +30,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 function PostAdd({ className, ...rest }) {
+  const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
   const fileInputRef = useRef(null);
   const [value, setValue] = useState('');
-  const account = useSelector((state) => state.account);
-
   const handleChange = (event) => {
     event.persist();
     setValue(event.target.value);
@@ -64,7 +64,7 @@ function PostAdd({ className, ...rest }) {
               disableUnderline
               fullWidth
               onChange={handleChange}
-              placeholder={`What's on your mind, ${account.user.firstName}`}
+              placeholder={`What's on your mind, ${state.name}`}
             />
           </Paper>
           <Tooltip title="Send">
