@@ -126,10 +126,12 @@ function Header({
     }
 
   },[image])
+  
+  const updateCover=(file)=>{
+    setImage(file)
+  }
   const handleAttach = () => {
     fileInputRefHeader.current.click();
-    console.log(fileInputRefHeader.current.files[0])
-    setImage(fileInputRefHeader.current.files[0])
   };
   return (
     <div
@@ -153,6 +155,7 @@ function Header({
             ref={fileInputRefHeader}
             type="file"
             accept="image/x-png,image/gif,image/jpeg,image/jpg"
+            onChange={(e)=>updateCover(e.target.files[0])}
           />
       </div>
       <Container maxWidth="lg">
