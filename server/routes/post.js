@@ -32,9 +32,18 @@ router.get('/mysubpost', requireLogin, (req, res) => {
             console.log('error')
         })
 })
-router.get(`/userpost/${userid}`,requireLogin,(req,res)=>{
-    
+router.get(`/userpost/:userid`,requireLogin,(req,res)=>{
+    Post.find({author:req.params.userid})
+        .populate('author','_id avatar name')
+        .sort('-createdAt')
+        .then(data=>{
+            res.json(data);
+        })
+        .catch(error=>{
+            console.log(error)
+        })
 })
+
 router.post('/createpost', requireLogin, (req, res) => {
 
     const { title, body,image } = req.body
