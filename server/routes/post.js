@@ -84,12 +84,12 @@ router.get('/mypost', requireLogin, (req, res) => {
 })
 
 router.put('/like',requireLogin,(req,res)=>{
+    console.log(req.body.postId)
     Post.findByIdAndUpdate(req.body.postId,{
         $push:{likes:req.user._id}
     },{
         new:true
     })
-    .populate("postedBy","_id name")
     .exec((err,result)=>{
         if(err)
         {
@@ -104,7 +104,6 @@ router.put('/unlike',requireLogin,(req,res)=>{
     },{
         new:true
     })
-    .populate("postedBy","_id name")
     .exec((err,result)=>{
         if(err)
         {

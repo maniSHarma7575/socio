@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -12,7 +12,8 @@ import {
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ShareIcon from '@material-ui/icons/Share';
-
+import {UserContext} from '../../App'
+import axios from '../../utils/axios'
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -24,18 +25,47 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Reactions({ post, className, ...rest }) {
+  const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
-  const [liked, setLiked] = useState(post.liked);
-  const [likes, setLikes] = useState(post.likes);
+  const [liked, setLiked] = useState(post.likes.includes(state._id));
+  const [likes, setLikes] = useState(post.likes.length);
 
-  const handleLike = () => {
-    setLiked(true);
-    setLikes((prevLikes) => prevLikes + 1);
+  const handleLike = (e,id) => {
+    e.preventDefault()
+    axios.put('/like',{
+      postId:id
+    },{
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      }
+    }).then((response)=>{
+      setLiked(true);
+      setLikes((prevLikes) => prevLikes + 1);
+    },(error)=>{
+      console.log(error)
+    })
+    
+     
   };
 
-  const handleUnlike = () => {
-    setLiked(false);
-    setLikes((prevLikes) => prevLikes - 1);
+  const handleUnlike = (e,id) => {
+    e.preventDefault()
+    axios.put('/unlike',{
+      postId:id
+    },{
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      }
+    })
+    .then((response)=>{
+      setLiked(false);
+      setLikes((prevLikes) => prevLikes - 1);
+    },(error)=>{
+      console.log(error)
+    })
+    
   };
 
   return (
@@ -47,14 +77,14 @@ function Reactions({ post, className, ...rest }) {
         <Tooltip title="Unlike">
           <IconButton
             className={classes.likedButton}
-            onClick={handleUnlike}
+            onClick={(e)=>handleUnlike(e,post._id)}
           >
             <FavoriteIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       ) : (
         <Tooltip title="Like">
-          <IconButton onClick={handleLike}>
+          <IconButton onClick={(e)=>handleLike(e,post._id)}>
             <FavoriteBorderIcon fontSize="small" />
           </IconButton>
         </Tooltip>
