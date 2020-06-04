@@ -16,6 +16,8 @@ import SendIcon from '@material-ui/icons/Send';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import {UserContext} from '../../App'
+import axios from '../../../src/utils/axios'
+import {PostContext} from '../../App'
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -30,21 +32,36 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function CommentAdd({ className, ...rest }) {
+function CommentAdd({ post,className, ...rest }) {
   const {state,dispatch}=useContext(UserContext)
+  const {postState,postDispatch}=useContext(PostContext)
   const classes = useStyles();
   const user=state
-  const fileInputRef = useRef(null);
   const [value, setValue] = useState('');
 
   const handleChange = (event) => {
     event.persist();
     setValue(event.target.value);
   };
-
-  const handleAttach = () => {
-    fileInputRef.current.click();
-  };
+  const handleComment=(event)=>{
+    event.persist()
+    console.log(value)
+    axios.put('/comment',{
+      message:value,
+      postedBy:post._id
+    },{
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+      }
+    }).then((response)=>{
+      console.log(response.data)
+      postDispatch({type:'UPDATE',payload:response.data})
+      setValue('')
+    },(error)=>{
+      console.log(error)
+    })
+  }
 
   return (
     <div
@@ -67,36 +84,15 @@ function CommentAdd({ className, ...rest }) {
           disableUnderline
           fullWidth
           onChange={handleChange}
+          value={value}
           placeholder="Leave a message"
         />
       </Paper>
       <Tooltip title="Send">
-        <IconButton color={value.length > 0 ? 'primary' : 'default'}>
+        <IconButton onClick={handleComment} color={value.length > 0 ? 'primary' : 'default'}>
           <SendIcon />
         </IconButton>
       </Tooltip>
-      <Divider className={classes.divider} />
-      <Tooltip title="Attach image">
-        <IconButton
-          edge="end"
-          onClick={handleAttach}
-        >
-          <AddPhotoIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Attach file">
-        <IconButton
-          edge="end"
-          onClick={handleAttach}
-        >
-          <AttachFileIcon />
-        </IconButton>
-      </Tooltip>
-      <input
-        className={classes.fileInput}
-        ref={fileInputRef}
-        type="file"
-      />
     </div>
   );
 }

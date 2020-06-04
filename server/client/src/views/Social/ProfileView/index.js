@@ -1,8 +1,8 @@
 import React, {
   useCallback,
   useState,
+  useEffect,
   useContext,
-  useEffect
 } from 'react';
 import {
   Box,
@@ -21,7 +21,7 @@ import Connections from './Connections';
 import Projects from './Projects';
 import Reviews from './Reviews';
 import {useParams} from 'react-router-dom'
-import {UserContext} from '../../../App'
+
 const tabs = [
   { value: 'timeline', label: 'Timeline' },
   { value: 'connections', label: 'Connections' },
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ProfileView() {
-  const {state,dispatch}=useContext(UserContext)
   const {userid}=useParams()
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
@@ -57,7 +56,6 @@ function ProfileView() {
       })
       .then((response) => {
         if (isMountedRef.current) {
-          console.log(response.data.user)
           setUser(response.data.user);
         }
       });
@@ -70,7 +68,6 @@ function ProfileView() {
   if (!user) {
     return null;
   }
-
   return (
     <Page
       className={classes.root}

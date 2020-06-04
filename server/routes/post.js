@@ -35,6 +35,7 @@ router.get('/mysubpost', requireLogin, (req, res) => {
 router.get(`/userpost/:userid`,requireLogin,(req,res)=>{
     Post.find({author:req.params.userid})
         .populate('author','_id avatar name')
+        .populate('comments.author','_id avatar name')
         .sort('-createdAt')
         .then(data=>{
             res.json(data);
@@ -115,17 +116,16 @@ router.put('/unlike',requireLogin,(req,res)=>{
 
 router.put('/comment',requireLogin,(req,res)=>{
     const comment={
-        text:req.body.text,
-        postedBy:req.user
+        message:req.body.message,
+        author:req.user
     }
-    console.log(req.body.postedBy)
     Post.findByIdAndUpdate(req.body.postedBy,{
         $push:{comments:comment}
     },{
         new:true
     })
-    .populate("comments.postedBy","_id name")
-    .populate("postedBy","_id name")
+    .populate("comments.author","_id name")
+    .populate("author","_id name")
     .exec((err,result)=>{
         if(err)
         {

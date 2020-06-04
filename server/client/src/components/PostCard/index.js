@@ -72,7 +72,7 @@ function PostCard({ className, post, ...rest }) {
             <Link
               color="textPrimary"
               component={RouterLink}
-              to="#"
+              to={`/profile/${post.author._id}`}
               variant="h6"
             >
               {post.author.name}
@@ -113,7 +113,8 @@ function PostCard({ className, post, ...rest }) {
           <Box my={2}>
             <Divider />
           </Box>
-          <CommentAdd />
+          
+          <CommentAdd post={post}/>
         </Box>
       </Card>
       {openedFile && (

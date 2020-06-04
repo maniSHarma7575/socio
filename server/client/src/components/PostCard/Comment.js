@@ -39,7 +39,7 @@ function Comment({ comment, className, ...rest }) {
         flexGrow={1}
         p={2}
         ml={2}
-        bgcolor="background.dark"
+        bgcolor="#eeeeee"
         className={classes.bubble}
       >
         <Box

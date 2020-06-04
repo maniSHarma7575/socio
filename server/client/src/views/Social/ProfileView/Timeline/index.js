@@ -1,7 +1,8 @@
 import React, {
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  useContext
 } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -15,7 +16,7 @@ import useIsMountedRef from '../../../../../src/hooks/useIsMountedRef';
 import PostAdd from '../../../../../src/components/PostAdd';
 import PostCard from '../../../../../src/components/PostCard';
 import About from './About';
-
+import {PostContext} from '../../../../App'
 const useStyles = makeStyles(() => ({
   root: {}
 }));
@@ -25,9 +26,9 @@ function Timeline({
   user,
   ...rest
 }) {
+  const {postState,postDispatch}=useContext(PostContext)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [posts, setPosts] = useState(null);
 
   const getPosts = useCallback(() => {
     axios
@@ -38,8 +39,7 @@ function Timeline({
       })
       .then((response) => {
         if (isMountedRef.current) {
-          console.log(response.data)
-          setPosts(response.data);
+         postDispatch({type:'POST',payload:response.data})
         }
       });
   }, [isMountedRef]);
@@ -72,7 +72,7 @@ function Timeline({
           lg={8}
         >
           <PostAdd />
-          {posts && posts.map((post) => (
+          {postState && postState.map((post) => (
             <Box
               mt={3}
               key={post.id}
