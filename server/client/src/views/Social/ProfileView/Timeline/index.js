@@ -31,10 +31,15 @@ function Timeline({
 
   const getPosts = useCallback(() => {
     axios
-      .get('/api/social/users/1/posts')
+      .get(`/userpost/${user._id}`,{
+        headers:{
+          "Authorization":"Bearer "+localStorage.getItem('jwt')
+        }
+      })
       .then((response) => {
         if (isMountedRef.current) {
-          setPosts(response.data.posts);
+          console.log(response.data)
+          setPosts(response.data);
         }
       });
   }, [isMountedRef]);

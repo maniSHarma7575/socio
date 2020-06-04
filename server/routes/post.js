@@ -46,19 +46,18 @@ router.get(`/userpost/:userid`,requireLogin,(req,res)=>{
 
 router.post('/createpost', requireLogin, (req, res) => {
 
-    const { title, body,image } = req.body
+    const { message,image } = req.body
 
-    if (!title || !body ||!image) {
+    if (!message || !image) {
         return res.status(422).json({
             error: "Please add all the fields"
         })
     }
     req.user.password = undefined
     const post = new Post({
-        title,
-        body,
-        photo:image,
-        postedBy: req.user
+        message,
+        media:image,
+        author: req.user
     })
     post.save().then(result => {
             res.json({ post: result })

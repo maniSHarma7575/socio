@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useContext } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -15,7 +15,7 @@ import {
 import SendIcon from '@material-ui/icons/Send';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-
+import {UserContext} from '../../App'
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -31,8 +31,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 function CommentAdd({ className, ...rest }) {
+  const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
-  const { user } = useSelector((state) => state.account);
+  const user=state
   const fileInputRef = useRef(null);
   const [value, setValue] = useState('');
 
