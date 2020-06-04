@@ -17,7 +17,8 @@ import {
 import SendIcon from '@material-ui/icons/Send';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
-
+import axios from '../utils/axios'
+import {PostContext} from '../.'
 const useStyles = makeStyles(() => ({
   root: {},
   divider: {
@@ -31,9 +32,11 @@ const useStyles = makeStyles(() => ({
 
 function PostAdd({ className, ...rest }) {
   const {state,dispatch}=useContext(UserContext)
+  const {postState,postDispatch}=useContext(PostContext)
   const classes = useStyles();
   const fileInputRef = useRef(null);
   const [value, setValue] = useState('');
+  const [image,setImage]=useState('')
   const handleChange = (event) => {
     event.persist();
     setValue(event.target.value);
@@ -42,6 +45,49 @@ function PostAdd({ className, ...rest }) {
   const handleAttach = () => {
     fileInputRef.current.click();
   };
+  const uploadImage=()=>{
+    const data=new FormData()
+    data.append("file",image)
+    data.append("upload_preset","socio-clone")
+    data.append("cloud_name","socio")
+    fetch("https://api.cloudinary.com/v1_1/socio/image/upload",{
+      method:"post",
+      body:data
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      uploadFields(data.url)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
+  const uploadFields=(url)=>{
+    if(value || url)
+    {
+      axios.post('/createPost',{
+        message:value,
+        media:url
+      },{
+        headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt") 
+        }
+      })
+      .then((response)=>{
+        console.log(response.data.post)
+        postDispatch({type:'ADDPOST',payload:response.data.post})
+      },(error)=>{
+        console.log(error)
+      })
+    }
+  }
+  const addPost=(event)=>{
+    event.persist();
+    image?uploadImage():uploadFields('')
+    setValue('')
+    setImage('')
+  }
 
   return (
     <Card
@@ -65,10 +111,11 @@ function PostAdd({ className, ...rest }) {
               fullWidth
               onChange={handleChange}
               placeholder={`What's on your mind, ${state.name}`}
+              value={value}
             />
           </Paper>
           <Tooltip title="Send">
-            <IconButton color={value.length > 0 ? 'primary' : 'default'}>
+            <IconButton onClick={addPost} color={value.length > 0 ? 'primary' : 'default'}>
               <SendIcon />
             </IconButton>
           </Tooltip>
@@ -93,6 +140,7 @@ function PostAdd({ className, ...rest }) {
             className={classes.fileInput}
             ref={fileInputRef}
             type="file"
+            onChange={(e)=>setImage(e.target.files[0])}
           />
         </Box>
       </CardContent>
