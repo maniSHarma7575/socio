@@ -1,27 +1,25 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
-    title: {
+    message: {
         type: String,
         required: true
     },
-    body: {
-        type: String,
-        required: true
-    },
-    photo: {
+    media: {
         type: String,
         required:true
     },
+    createdAt    : { type: Date, required: true, default: Date.now },
     likes:[{type:ObjectId,ref:"User"}],
     comments:[{
-        text:String,
-        postedBy:{type:ObjectId,ref:"User"}
+        message:String,
+        author:{type:ObjectId,ref:"User"},
+        createdAt    : { type: Date, required: true, default: Date.now }
     }],
-    postedBy: {
+    author: {
         type: ObjectId,
         ref: "User"
     }
-},{timestamps:true})
+})
 
 mongoose.model("Post", postSchema)

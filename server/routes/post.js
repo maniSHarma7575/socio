@@ -32,6 +32,9 @@ router.get('/mysubpost', requireLogin, (req, res) => {
             console.log('error')
         })
 })
+router.get(`/userpost/${userid}`,requireLogin,(req,res)=>{
+    
+})
 router.post('/createpost', requireLogin, (req, res) => {
 
     const { title, body,image } = req.body

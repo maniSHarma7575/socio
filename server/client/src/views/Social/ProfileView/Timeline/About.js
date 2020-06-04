@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -19,11 +19,12 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
-  Plus as PlusIcon,
+  BookOpen as BookOpenIcon,
   Home as HomeIcon,
   Mail as MailIcon,
   Briefcase as BriefcaseIcon
 } from 'react-feather';
+import {UserContext} from '../../../../App'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -41,7 +42,7 @@ function About({
   ...rest
 }) {
   const classes = useStyles();
-
+  const {state,dispatch}=useContext(UserContext)
   return (
     <div
       className={clsx(classes.root, className)}
@@ -53,14 +54,14 @@ function About({
         <CardContent>
           <LinearProgress
             variant="determinate"
-            value={user.profileProgress}
+            value={state?state.profileProgress:user.profileProgress}
           />
           <Box mt={2}>
             <Typography
               variant="subtitle2"
               color="textSecondary"
             >
-              50% Set Up Complete
+              {state?state.profileProgress:user.profileProgress}% Set Up Complete
             </Typography>
           </Box>
         </CardContent>
@@ -75,7 +76,7 @@ function About({
               color="textSecondary"
             >
               &quot;
-              {user.quote}
+              {state?state.quote:user.quote}
               &quot;
             </Typography>
             <List>
@@ -95,7 +96,7 @@ function About({
                       variant="body2"
                       color="textPrimary"
                     >
-                      {user.currentJob.title}
+                      {state?state.currentJob.title:user.currentJob.title}
                       {' '}
                       at
                       {' '}
@@ -104,7 +105,7 @@ function About({
                         color="textPrimary"
                         href="#"
                       >
-                        {user.currentJob.company}
+                        {state?state.currentJob.company:user.currentJob.company}
                       </Link>
                     </Typography>
                   )}
@@ -114,14 +115,14 @@ function About({
                       color="textSecondary"
                     >
                       Past:
-                      {user.previousJob.title}
+                      {state?state.previousJob.title:user.previousJob.title}
                       {' '}
                       <Link
                         variant="caption"
                         color="textSecondary"
                         href="#"
                       >
-                        {user.previousJob.company}
+                        {state?state.previousJob.company:user.previousJob.company}
                       </Link>
                     </Typography>
                   )}
@@ -133,11 +134,11 @@ function About({
               >
                 <ListItemAvatar>
                   <Avatar className={classes.cityAvatar}>
-                    <PlusIcon size="22" />
+                    <BookOpenIcon size="22" />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary="Add school or collage"
+                  primary={state?state.college:user.college}
                   primaryTypographyProps={{
                     variant: 'body2',
                     color: 'textSecondary'
@@ -167,7 +168,7 @@ function About({
                         color="textPrimary"
                         href="#"
                       >
-                        {user.currentCity}
+                        {state?state.currentCity:user.currentCity}
                       </Link>
                     </Typography>
                   )}
@@ -183,7 +184,7 @@ function About({
                         color="textSecondary"
                         href="#"
                       >
-                        {user.originCity}
+                        {state?state.originCity:user.originCity}
                       </Link>
                     </Typography>
                   )}
@@ -199,7 +200,7 @@ function About({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={user.email}
+                  primary={state?state.email:user.email}
                   primaryTypographyProps={{
                     variant: 'body2',
                     color: 'textPrimary'
