@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useContext
 } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink,useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import _ from 'lodash';
@@ -32,6 +32,7 @@ import {
 import axios from '../../../../src/utils/axios';
 import useIsMountedRef from '../../../../src/hooks/useIsMountedRef';
 import {UserContext} from '../../../App'
+
 const connectStatusMap = {
   true:"UnFollow",
   false:"Follow"
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Connections({ user,className, ...rest }) {
+  const {userid}=useParams()
   const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
@@ -106,18 +108,17 @@ function Connections({ user,className, ...rest }) {
   }
   const getConnections = useCallback(() => {
     axios
-      .get(`/connections/${user._id}`,{
+      .get(`/connections/${userid}`,{
         headers:{
           "Authorization":"Bearer "+localStorage.getItem("jwt")
         }
       })
       .then((response) => {
         if (isMountedRef.current) {
-          console.log(response.data)
           setConnections(response.data)
         }
       });
-  }, [isMountedRef]);
+  }, [isMountedRef,userid]);
 
   useEffect(() => {
     getConnections();

@@ -29,7 +29,6 @@ function Timeline({
   const {postState,postDispatch}=useContext(PostContext)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-
   const getPosts = useCallback(() => {
     axios
       .get(`/userpost/${user._id}`,{

@@ -111,7 +111,6 @@ function Header({
           }
         }).then((response)=>{
             const {data}=response
-            console.log(data)
             localStorage.setItem("user",JSON.stringify({
               ...state,cover:data.cover
             }))
@@ -142,7 +141,7 @@ function Header({
         className={classes.cover}
         style={{ backgroundImage: `url(${state._id==user._id?state.cover:user.cover})` }}
       >
-        <Button
+       {state._id===user._id && <Button
           className={classes.changeButton}
           variant="contained"
           onClick={handleAttach}
@@ -150,6 +149,7 @@ function Header({
           <AddPhotoIcon className={classes.addPhotoIcon} />
           Change Cover
         </Button>
+       }
         <input
             className={classes.fileInput}
             ref={fileInputRefHeader}

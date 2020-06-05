@@ -54,14 +54,14 @@ function About({
         <CardContent>
           <LinearProgress
             variant="determinate"
-            value={state?state.profileProgress:user.profileProgress}
+            value={state._id===user._id?state.profileProgress:user.profileProgress}
           />
           <Box mt={2}>
             <Typography
               variant="subtitle2"
               color="textSecondary"
             >
-              {state?state.profileProgress:user.profileProgress}% Set Up Complete
+              {state._id===user._id?state.profileProgress:user.profileProgress}% Set Up Complete
             </Typography>
           </Box>
         </CardContent>
@@ -76,7 +76,7 @@ function About({
               color="textSecondary"
             >
               &quot;
-              {state?state.quote:user.quote}
+              {state._id===user._id?state.quote:user.quote}
               &quot;
             </Typography>
             <List>
@@ -96,7 +96,7 @@ function About({
                       variant="body2"
                       color="textPrimary"
                     >
-                      {state?state.currentJob.title:user.currentJob.title}
+                      {state._id===user._id?state.currentJob.title:user.currentJob.title}
                       {' '}
                       at
                       {' '}
@@ -105,7 +105,7 @@ function About({
                         color="textPrimary"
                         href="#"
                       >
-                        {state?state.currentJob.company:user.currentJob.company}
+                        {state._id===user._id?state.currentJob.company:user.currentJob.company}
                       </Link>
                     </Typography>
                   )}
@@ -115,14 +115,14 @@ function About({
                       color="textSecondary"
                     >
                       Past:
-                      {state?state.previousJob.title:user.previousJob.title}
+                      {state._id===user._id?state.previousJob.title:user.previousJob.title}
                       {' '}
                       <Link
                         variant="caption"
                         color="textSecondary"
                         href="#"
                       >
-                        {state?state.previousJob.company:user.previousJob.company}
+                        {state._id===user._id?state.previousJob.company:user.previousJob.company}
                       </Link>
                     </Typography>
                   )}
@@ -138,7 +138,7 @@ function About({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={state?state.college:user.college}
+                  primary={state._id===user._id?state.college:user.college}
                   primaryTypographyProps={{
                     variant: 'body2',
                     color: 'textSecondary'
@@ -168,7 +168,7 @@ function About({
                         color="textPrimary"
                         href="#"
                       >
-                        {state?state.currentCity:user.currentCity}
+                        {state._id===user._id?state.currentCity:user.currentCity}
                       </Link>
                     </Typography>
                   )}
@@ -184,7 +184,7 @@ function About({
                         color="textSecondary"
                         href="#"
                       >
-                        {state?state.originCity:user.originCity}
+                        {state._id===user._id?state.originCity:user.originCity}
                       </Link>
                     </Typography>
                   )}
@@ -200,7 +200,7 @@ function About({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={state?state.email:user.email}
+                  primary={state._id===user._id?state.email:user.email}
                   primaryTypographyProps={{
                     variant: 'body2',
                     color: 'textPrimary'

@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileView() {
   const {userid}=useParams()
-  console.log(userid)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
   const [currentTab, setCurrentTab] = useState('timeline');
