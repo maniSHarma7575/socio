@@ -58,7 +58,7 @@ router.post('/createpost', requireLogin, (req, res) => {
             res.json({ post: result })
         })
         .catch(err => {
-            console.log(error)
+            console.log(err)
         })
 
 })

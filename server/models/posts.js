@@ -3,11 +3,11 @@ const { ObjectId } = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
     message: {
         type: String,
-        required: true
+       
     },
     media: {
         type: String,
-        required:true
+        
     },
     createdAt    : { type: Date, required: true, default: Date.now },
     likes:[{type:ObjectId,ref:"User"}],

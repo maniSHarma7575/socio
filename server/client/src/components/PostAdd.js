@@ -18,7 +18,7 @@ import SendIcon from '@material-ui/icons/Send';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import axios from '../utils/axios'
-import {PostContext} from '../.'
+import {PostContext} from '../App'
 const useStyles = makeStyles(() => ({
   root: {},
   divider: {
@@ -77,6 +77,8 @@ function PostAdd({ className, ...rest }) {
       .then((response)=>{
         console.log(response.data.post)
         postDispatch({type:'ADDPOST',payload:response.data.post})
+        setValue('')
+        setImage('')
       },(error)=>{
         console.log(error)
       })
@@ -85,8 +87,7 @@ function PostAdd({ className, ...rest }) {
   const addPost=(event)=>{
     event.persist();
     image?uploadImage():uploadFields('')
-    setValue('')
-    setImage('')
+    
   }
 
   return (

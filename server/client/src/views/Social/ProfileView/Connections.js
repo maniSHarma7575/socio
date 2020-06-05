@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Connections({ className, ...rest }) {
+function Connections({ user,className, ...rest }) {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
@@ -83,10 +83,15 @@ function Connections({ className, ...rest }) {
 
   const getConnections = useCallback(() => {
     axios
-      .get('/api/social/users/1/connections')
+      .get(`/connections/${user._id}`,{
+        headers:{
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+        }
+      })
       .then((response) => {
         if (isMountedRef.current) {
-          setConnections(response.data.connections);
+          console.log(response.data)
+          setConnections(response.data)
         }
       });
   }, [isMountedRef]);
@@ -137,7 +142,7 @@ function Connections({ className, ...rest }) {
             .map((connection) => (
               <Grid
                 item
-                key={connection.id}
+                key={connection._id}
                 xs={12}
                 md={6}
               >
@@ -162,7 +167,7 @@ function Connections({ className, ...rest }) {
                         variant="h5"
                         color="textPrimary"
                         component={RouterLink}
-                        to="#"
+                        to={`/profile/${connection._id}`}
                       >
                         {connection.name}
                       </Link>

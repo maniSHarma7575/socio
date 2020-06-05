@@ -21,6 +21,7 @@ import Connections from './Connections';
 import Projects from './Projects';
 import Reviews from './Reviews';
 import {useParams} from 'react-router-dom'
+import { SnackbarProvider } from "notistack";
 
 const tabs = [
   { value: 'timeline', label: 'Timeline' },
@@ -69,6 +70,7 @@ function ProfileView() {
     return null;
   }
   return (
+    <SnackbarProvider>
     <Page
       className={classes.root}
       title="Profile"
@@ -98,12 +100,13 @@ function ProfileView() {
           pb={6}
         >
           {currentTab === 'timeline' && <Timeline user={user} />}
-          {currentTab === 'connections' && <Connections />}
+          {currentTab === 'connections' && <Connections user={user}/>}
           {currentTab === 'projects' && <Projects />}
           {currentTab === 'reviews' && <Reviews />}
         </Box>
       </Container>
     </Page>
+    </SnackbarProvider>
   );
 }
 

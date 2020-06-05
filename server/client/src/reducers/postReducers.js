@@ -7,7 +7,7 @@ export const postReducer=(state,action)=>{
     case "UPDATE":
       return state.map(item=>{return item._id===action.payload._id?action.payload:item})
     case "ADDPOST":
-      return state.push(action.payload)
+      return [action.payload,...state]
     default:
       return state
   }

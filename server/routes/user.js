@@ -92,6 +92,23 @@ router.put('/updatecover',requireLogin,(req,res)=>{
     })
 })
 
+router.get(`/connections/:userid`,requireLogin,(req,res)=>{
+    User.find({_id:req.params.userid})
+    .then(user=>{
+      User.find({_id:{$in:[...user[0].following,...user[0].followers]}})
+      .select("_id name avatar followers following")
+      .then(connection=>{
+        res.status(200).json(connection)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+
+})
 router.post('/searchUser',requireLogin,(req,res)=>{
   let userPattern=new RegExp("^"+req.body.query)
   User.find({email:{$regex:userPattern}})
