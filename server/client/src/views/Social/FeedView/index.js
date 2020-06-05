@@ -1,7 +1,8 @@
 import React, {
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  useContext
 } from 'react';
 import {
   Box,
@@ -14,6 +15,7 @@ import Page from '../../../components/Page';
 import PostAdd from '../../../components/PostAdd';
 import PostCard from '../../../components/PostCard';
 import Header from './Header';
+import {PostContext} from '../../../App'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,16 +27,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SocialFeedView() {
+  const {postState,postDispatch}=useContext(PostContext)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [posts, setPosts] = useState(null);
 
   const getPosts = useCallback(() => {
     axios
-      .get('/api/social/feed')
+      .get('/allpost',{
+        headers:{
+          "Authorization":"Bearer "+localStorage.getItem('jwt')
+        }
+      })
       .then((response) => {
         if (isMountedRef.current) {
-          setPosts(response.data.posts);
+          postDispatch({type:'POST',payload:response.data.result})
         }
       });
   }, [isMountedRef]);
@@ -43,7 +49,7 @@ function SocialFeedView() {
     getPosts();
   }, [getPosts]);
 
-  if (!posts) {
+  if (!postState) {
     return null;
   }
 
@@ -57,10 +63,10 @@ function SocialFeedView() {
         <Box mt={3}>
           <PostAdd />
         </Box>
-        {posts.map((post) => (
+        {postState.map((post) => (
           <Box
             mt={3}
-            key={post.id}
+            key={post._id}
           >
             <PostCard post={post} />
           </Box>

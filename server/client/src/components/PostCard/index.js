@@ -107,7 +107,7 @@ function PostCard({ className, post, ...rest }) {
           {post.comments.map((comment) => (
             <Comment
               comment={comment}
-              key={comment.id}
+              key={comment._id}
             />
           ))}
           <Box my={2}>

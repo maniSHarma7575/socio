@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import track from '../utils/analytics';
+import { v4 as uuidv4 } from 'uuid'
 
 const Page = forwardRef(({
   title,
@@ -27,6 +28,7 @@ const Page = forwardRef(({
     <div
       ref={ref}
       {...rest}
+      key={uuidv4()}
     >
       <Helmet>
         <title>{title}</title>
