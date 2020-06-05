@@ -2,15 +2,8 @@ import { Switch, Redirect ,useHistory} from 'react-router-dom';
 import React,{useContext, createContext,useReducer,useEffect} from "react";
 import { RouteWithLayout, NotFoundRoute } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
-import {Dashboard} from './views'
-import {Login} from './views'
-import {NotFound} from './views'
-import {SignUp} from './views'
-import {NewPassword} from './views'
-import {ResetPassword} from './views'
-import {ProfileView} from './views'
+import {Dashboard, FeedView,Login,NotFound,SignUp,NewPassword,ResetPassword,ProfileView} from './views'
 import {PrivateRouteWithLayout} from './components'
-import {reducer,initialState} from './reducers/userReducers'
 import {UserContext} from './App'
 const Routes = () => {
     const history=useHistory()
@@ -46,6 +39,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/profile/:userid"
+      />
+      <PrivateRouteWithLayout
+        component={FeedView}
+        exact
+        layout={MainLayout}
+        path="/feed"
       />
       <RouteWithLayout
         component={SignUp}
