@@ -1,7 +1,8 @@
 import React, {
   useState,
   useEffect,
-  useCallback
+  useCallback,
+  useContext
 } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -30,11 +31,10 @@ import {
 } from 'react-feather';
 import axios from '../../../../src/utils/axios';
 import useIsMountedRef from '../../../../src/hooks/useIsMountedRef';
-
+import {UserContext} from '../../../App'
 const connectStatusMap = {
-  not_connected: 'Connect',
-  pending: 'Pending',
-  connected: 'Connected'
+  true:"UnFollow",
+  false:"Follow"
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -49,38 +49,61 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Connections({ user,className, ...rest }) {
+  const {state,dispatch}=useContext(UserContext)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
   const [connections, setConnections] = useState(null);
   const [search, setSearch] = useState('');
 
-  const handleConnectToggle = (id) => {
-    setConnections((prevConnections) => {
-      const newConnections = _.map(prevConnections, _.clone);
-
-      return newConnections.map((connection) => {
-        if (connection.id === id) {
-          const newConnection = { ...connection };
-
-          newConnection.status = connection.status === 'connected' || connection.status === 'pending'
-            ? 'not_connected'
-            : 'pending';
-
-          if (newConnection.status === 'pending') {
-            enqueueSnackbar('Connection request sent', {
-              variant: 'success'
-            });
-          }
-
-          return newConnection;
-        }
-
-        return connection;
+  const unfollowUser=(id)=>{
+    axios.put('/unfollow',{
+      unfollowId:id
+    },{
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem('jwt')
+      }
+    })
+    .then(response=>{
+      const {data}=response
+      dispatch({type:"UPDATE",payload:{followers:data.followers,following:data.following}})
+      localStorage.setItem("user",JSON.stringify(data))
+      enqueueSnackbar('Unfollowed user', {
+        variant: 'warning'
       });
-    });
-  };
+    })
+  }
+  const followUser=(id)=>{
+    axios.put('/follow',{
+      followId:id
+    },{
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+localStorage.getItem('jwt')
+      }
+    })
+    .then((response)=>{
+      const {data}=response
+      dispatch({type:"UPDATE",payload:{followers:data.followers,following:data.following}})
+      localStorage.setItem("user",JSON.stringify(data))
+      enqueueSnackbar('Followed User Successfully', {
+        variant: 'success'
+      });
 
+    },(error)=>{
+      console.log(error)
+    })
+
+  }
+  const handleConnectToggle = (id) => {
+    const status=state?state.following.includes(id):true
+    status?unfollowUser(id):followUser(id)
+  };
+  const commonConnection=(followers)=>{
+    let intersection = state.followers.filter(x => followers.includes(x));
+    return intersection.length
+  }
   const getConnections = useCallback(() => {
     axios
       .get(`/connections/${user._id}`,{
@@ -176,17 +199,17 @@ function Connections({ user,className, ...rest }) {
                         color="textSecondary"
                         gutterBottom
                       >
-                        {connection.common}
+                        {commonConnection(connection.followers)}
                         {' '}
                         connections in common
                       </Typography>
-                      {connection.status !== 'rejected' && (
+                      {(
                         <Button
                           variant="outlined"
                           size="small"
-                          onClick={() => handleConnectToggle(connection.id)}
+                          onClick={() => handleConnectToggle(connection._id)}
                         >
-                          {connectStatusMap[connection.status]}
+                          {connectStatusMap[state?state.following.includes(connection._id):true]}
                         </Button>
                       )}
                     </Box>
