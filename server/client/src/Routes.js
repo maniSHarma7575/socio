@@ -47,7 +47,6 @@ const Routes = () => {
         layout={MainLayout}
         path="/profile/:userid"
       />
-      
       <RouteWithLayout
         component={SignUp}
         exact

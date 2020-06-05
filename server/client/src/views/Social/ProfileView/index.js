@@ -39,10 +39,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileView() {
   const {userid}=useParams()
+  console.log(userid)
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
   const [currentTab, setCurrentTab] = useState('timeline');
   const [user, setUser] = useState(null);
+  
 
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
@@ -60,7 +62,7 @@ function ProfileView() {
           setUser(response.data.user);
         }
       });
-  }, [isMountedRef]);
+  }, [isMountedRef,userid]);
 
   useEffect(() => {
     getPosts();
