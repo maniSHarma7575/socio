@@ -42,7 +42,8 @@
     "theme": "^0.1.0",
     "underscore": "^1.10.2",
     "uuid": "^8.1.0",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "yup": "^0.29.1"
   },
   "scripts": {
     "start": "react-scripts start",
