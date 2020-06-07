@@ -1,78 +1,80 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
+import clsx from 'clsx';
+import {
+  AppBar,
+  Box,
+  Hidden,
+  IconButton,
+  Toolbar,
+  makeStyles,
+  SvgIcon
+} from '@material-ui/core';
+import { Menu as MenuIcon } from 'react-feather';
+import Logo from '../../../../components/Logo';
+import Account from './Account';
+import Contacts from './Contact';
+import Notifications from './Notification';
+import Search from './Search';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: 'none'
+      boxShadow: 'none',
+      backgroundColor: theme.palette.primary.main
   },
-  flexGrow: {
-    flexGrow: 1
-  },
-  signOutButton: {
-    marginLeft: theme.spacing(1)
+  toolbar: {
+    minHeight: 64
   }
 }));
 
-const Topbar = props => {
-  const { className, onSidebarOpen, ...rest } = props;
-
+function TopBar({
+  className,
+  onMobileNavOpen,
+  ...rest
+}) {
   const classes = useStyles();
-
-  const [notifications] = useState([]);
 
   return (
     <AppBar
-      {...rest}
       className={clsx(classes.root, className)}
+      {...rest}
     >
-      <Toolbar>
-        <RouterLink to="/">
-          <img
-            alt="Logo"
-            src="/images/logos/logo--white.svg"
-          />
-        </RouterLink>
-        <div className={classes.flexGrow} />
-        <Hidden mdDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton
-            className={classes.signOutButton}
-            color="inherit"
-          >
-            <InputIcon />
-          </IconButton>
-        </Hidden>
+      <Toolbar className={classes.toolbar}>
         <Hidden lgUp>
           <IconButton
+            className={classes.menuButton}
             color="inherit"
-            onClick={onSidebarOpen}
+            onClick={onMobileNavOpen}
           >
-            <MenuIcon />
+            <SvgIcon fontSize="small">
+              <MenuIcon />
+            </SvgIcon>
           </IconButton>
         </Hidden>
+        <Hidden mdDown>
+          <RouterLink to="/">
+            <Logo />
+          </RouterLink>
+        </Hidden>
+        <Box
+          ml={2}
+          flexGrow={1}
+        />
+        <Search />
+        <Contacts />
+        <Notifications />
+        <Box ml={2}>
+          <Account />
+        </Box>
       </Toolbar>
     </AppBar>
   );
-};
+}
 
-Topbar.propTypes = {
+TopBar.propTypes = {
   className: PropTypes.string,
-  onSidebarOpen: PropTypes.func
+  onMobileNavOpen: PropTypes.func
 };
 
-export default Topbar;
+export default TopBar;

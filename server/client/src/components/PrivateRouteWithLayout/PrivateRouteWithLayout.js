@@ -1,10 +1,12 @@
-import React,{useContext} from 'react';
+import React,{useContext,Suspense} from 'react';
 import { Route,Redirect } from 'react-router-dom';
 import {UserContext} from '../../App'
+
 const PrivateRouteWithLayout = props => {
     const {state,dispatch}=useContext(UserContext)
   const { layout: Layout, component: Component, ...rest } = props;
   return (
+    
     state?<Route
       {...rest}
       render={matchProps => (
@@ -13,6 +15,7 @@ const PrivateRouteWithLayout = props => {
         </Layout>
       )}
     />:<Redirect to='/login' />
+   
   );
 };
 

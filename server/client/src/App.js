@@ -11,7 +11,7 @@ import UserProfile from "./views/Soscial/UserProfile/UserProfile"
 import SubscribePosts from "./views/Soscial/SubscribePosts/SubscribePosts"
 import {reducer,initialState} from './reducers/userReducers'
 import {postReducer,postinitialState} from './reducers/postReducers'
-
+import { SnackbarProvider } from "notistack";
 import ResetPassword from "./views/Reset/Reset";
 import NewPassword from "./views/NewPassword/NewPassword";
 import Routes from './Routes';
@@ -58,9 +58,10 @@ validate.validators = {
   };
 function App() {
     const [state,dispatch]=useReducer(reducer,initialState)
-    const [postStateValue,postDispatchValue]=useReducer(postReducer,initialState)
+    const [postStateValue,postDispatchValue]=useReducer(postReducer,postinitialState)
     return (
         <ThemeProvider theme={theme}>
+            <SnackbarProvider>
             <UserContext.Provider value={{state:state,dispatch:dispatch}}>
                 <PostContext.Provider value={{postState:postStateValue,postDispatch:postDispatchValue}}>
                     <Router history={browserHistory}>
@@ -68,6 +69,7 @@ function App() {
                     </Router>
                 </PostContext.Provider>
             </UserContext.Provider>
+            </SnackbarProvider>
         </ThemeProvider>
     )
 }

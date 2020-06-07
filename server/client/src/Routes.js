@@ -1,5 +1,5 @@
 import { Switch, Redirect ,useHistory} from 'react-router-dom';
-import React,{useContext, createContext,useReducer,useEffect} from "react";
+import React,{Suspense,useContext,useEffect} from "react";
 import { RouteWithLayout, NotFoundRoute } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {Dashboard, FeedView,Login,NotFound,SignUp,NewPassword,ResetPassword,ProfileView} from './views'
