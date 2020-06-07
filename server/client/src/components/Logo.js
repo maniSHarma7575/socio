@@ -4,7 +4,8 @@ function Logo(props) {
   return (
     <img
       alt="Logo"
-      src="/images/logos/socioo.jpeg"
+      style={{background:"white"}}
+      src="/images/logos/sociologo.png"
       {...props}
     />
   );
