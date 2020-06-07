@@ -1,18 +1,17 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React,{useContext} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Grid, makeStyles } from '@material-ui/core';
 import ProfileDetails from './ProfileDetails';
 import GeneralSettings from './GeneralSettings';
-
+import {UserContext} from '../../../App'
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 function General({ className, ...rest }) {
   const classes = useStyles();
-  const { user } = useSelector((state) => state.account);
+  const {state,dispatch}=useContext(UserContext)
 
   return (
     <Grid
@@ -28,7 +27,7 @@ function General({ className, ...rest }) {
         xl={3}
         xs={12}
       >
-        <ProfileDetails user={user} />
+        <ProfileDetails user={state}/>
       </Grid>
       <Grid
         item
@@ -37,7 +36,7 @@ function General({ className, ...rest }) {
         xl={9}
         xs={12}
       >
-        <GeneralSettings user={user} />
+        <GeneralSettings user={state} />
       </Grid>
     </Grid>
   );

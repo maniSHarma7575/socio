@@ -16,7 +16,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-import wait from 'src/utils/wait';
+
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -49,7 +49,7 @@ function Security({ className, ...rest }) {
       }) => {
         try {
           // Make API request
-          await wait(500);
+     
           resetForm();
           setStatus({ success: true });
           setSubmitting(false);

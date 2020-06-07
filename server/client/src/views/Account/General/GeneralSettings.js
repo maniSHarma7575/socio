@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
@@ -19,7 +18,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { updateProfile } from 'src/actions/accountActions';
+
 
 const stateOptions = ['Alabama', 'New York', 'San Francisco'];
 
@@ -29,7 +28,6 @@ const useStyles = makeStyles(() => ({
 
 function GeneralSettings({ user, className, ...rest }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   return (
@@ -58,7 +56,7 @@ function GeneralSettings({ user, className, ...rest }) {
         setSubmitting
       }) => {
         try {
-          await dispatch(updateProfile(values));
+         
           resetForm();
           setStatus({ success: true });
           enqueueSnackbar('Profile updated', {
