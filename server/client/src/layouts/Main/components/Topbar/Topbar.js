@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar({
   className,
-  onMobileNavOpen,
+  onSidebarOpen,
   ...rest
 }) {
   const classes = useStyles();
@@ -45,7 +45,7 @@ function TopBar({
           <IconButton
             className={classes.menuButton}
             color="inherit"
-            onClick={onMobileNavOpen}
+            onClick={onSidebarOpen}
           >
             <SvgIcon fontSize="small">
               <MenuIcon />
@@ -74,7 +74,7 @@ function TopBar({
 
 TopBar.propTypes = {
   className: PropTypes.string,
-  onMobileNavOpen: PropTypes.func
+  onSidebarOpen: PropTypes.func
 };
 
 export default TopBar;
