@@ -16,7 +16,6 @@ const useStyles = makeStyles(() => ({
 
 function Header({ className, ...rest }) {
   const classes = useStyles();
-
   return (
     <div
       className={clsx(classes.root, className)}
