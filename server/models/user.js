@@ -77,6 +77,10 @@ const userSchema = new mongoose.Schema({
     originCity:{
         type:String,
         default:''
+    },
+    phone:{
+        type:String,
+        default:''
     }
 })
 

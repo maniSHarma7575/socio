@@ -40,7 +40,15 @@ function GeneralSettings({ user, className, ...rest }) {
         phone: user.phone,
         state: user.state,
         city:user.currentCity,
-        originCity:'canada'
+        origin:user.originCity,
+        desingation:user.designation,
+        previousJobCompany:user.previousJob.company,
+        previousJobTitle:user.previousJob.title,
+        currentJobCompany:user.currentJob.company,
+        currentJobTitle:user.currentJob.title,
+        origin:user.originCity,
+        quote:user.quote
+
       }}
       validationSchema={Yup.object().shape({
         country: Yup.string().max(255).required('Country is required'),
@@ -155,6 +163,7 @@ function GeneralSettings({ user, className, ...rest }) {
                     name="state"
                     onChange={handleChange}
                     select
+                    required
                     SelectProps={{ native: true }}
                     value={values.state}
                     variant="outlined"
@@ -231,8 +240,126 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
+                <TextField
+                    error={Boolean(touched.desingation && errors.desingation)}
+                    fullWidth
+                    helperText={touched.desingation && errors.desingation}
+                    label="Designation"
+                    name="designation"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="designation"
+                    value={values.desingation}
+                    variant="outlined"
+                  />
                 </Grid>
               </Grid>
+             
+            </CardContent>
+            <CardHeader title="Achievement" />
+            <Divider />
+            <CardContent>
+            <Grid
+                container
+                spacing={4}
+            >
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.currentJobCompany && errors.currentJobCompany)}
+                    fullWidth
+                    helperText={touched.currentJobCompany && errors.currentJobCompany}
+                    label="Current Company"
+                    name="currentJobCompany"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="currentJobCompany"
+                    value={values.currentJobCompany}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                    <TextField
+                    error={Boolean(touched.currentJobTitle && errors.currentJobTitle)}
+                    fullWidth
+                    helperText={touched.currentJobTitle && errors.currentJobTitle}
+                    label="Current Title"
+                    name="currentJobTitle"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="currentJobTitle"
+                    value={values.currentJobTitle}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.previousJobCompany && errors.previousJobCompany)}
+                    fullWidth
+                    helperText={touched.previousJobCompany && errors.previousJobCompany}
+                    label="previous Company"
+                    name="previousJobCompany"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="previousJobCompany"
+                    value={values.previousJobCompany}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                    <TextField
+                    error={Boolean(touched.previousJobTitle && errors.previousJobTitle)}
+                    fullWidth
+                    helperText={touched.previousJobTitle && errors.previousJobTitle}
+                    label="previous Title"
+                    name="previousJobTitle"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="previousJobTitle"
+                    value={values.previousJobTitle}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.quote && errors.quote)}
+                    fullWidth
+                    helperText={touched.quote && errors.quote}
+                    label="Quote"
+                    name="quote"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="quote"
+                    value={values.quote}
+                    variant="outlined"
+                  />
+                </Grid>
+            </Grid>
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>
