@@ -24,6 +24,33 @@ router.get('/user/:id',requireLogin,(req,res)=>{
   })
 })
 
+router.put('/userupdate',requireLogin,(req,res)=>{
+  User.findByIdAndUpdate(req.user._id,{$set:{
+      currentCity:req.body.city,
+      country:req.body.country,
+      currentJob:{
+        company:req.body.currentJobCompany,
+        title:req.body.currentJobTitle
+      },
+      previousJob:{
+        company:req.body.previousJobCompany,
+        title:req.body.previousJobTitle
+      },
+      name:req.body.name,
+      originCity:req.body.origin,
+      phone:req.body.phone,
+      quote:req.body.quote,
+      state:req.body.state,
+      designation:req.body.designation
+  }},{new:true},
+    (err,result)=>{
+      if(err)
+      {
+        return res.status(422).json({error:"User Cannot be updated"})
+      }
+      res.json(result)
+    })
+})
 router.put('/follow',requireLogin,(req,res)=>{
   User.findByIdAndUpdate(req.body.followId,{
     $push:{followers:req.user._id}

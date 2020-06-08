@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
@@ -18,9 +18,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
-
-const stateOptions = ['Alabama', 'New York', 'San Francisco'];
+import axios from '../../../utils/axios'
+import {UserContext} from '../../../App'
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -29,7 +28,7 @@ const useStyles = makeStyles(() => ({
 function GeneralSettings({ user, className, ...rest }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-
+  const {state,dispatch}=useContext(UserContext)
   return (
     <Formik
       enableReinitialize
@@ -41,7 +40,7 @@ function GeneralSettings({ user, className, ...rest }) {
         state: user.state,
         city:user.currentCity,
         origin:user.originCity,
-        desingation:user.designation,
+        designation:user.designation,
         previousJobCompany:user.previousJob.company,
         previousJobTitle:user.previousJob.title,
         currentJobCompany:user.currentJob.company,
@@ -62,7 +61,23 @@ function GeneralSettings({ user, className, ...rest }) {
         setSubmitting
       }) => {
         try {
-         
+         console.log(values)
+          axios.put('/userupdate',{
+            ...values
+          },{
+            headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+          }
+          }).then((response)=>{
+              console.log(response.data)
+              
+              localStorage.setItem("user",JSON.stringify(response.data))
+              dispatch({type:'USER',payload:response.data})
+              
+          },(error)=>{
+            console.log(error)
+          })
           resetForm();
           setStatus({ success: true });
           enqueueSnackbar('Profile updated', {
@@ -130,6 +145,7 @@ function GeneralSettings({ user, className, ...rest }) {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     required
+                    disabled
                     type="email"
                     value={values.email}
                     variant="outlined"
@@ -158,25 +174,17 @@ function GeneralSettings({ user, className, ...rest }) {
                   xs={12}
                 >
                  <TextField
+                  error={Boolean(touched.state && errors.state)}
                     fullWidth
                     label="Select State"
                     name="state"
+                    helperText={touched.state && errors.state}
+                    onBlur={handleBlur}
                     onChange={handleChange}
-                    select
                     required
-                    SelectProps={{ native: true }}
                     value={values.state}
                     variant="outlined"
-                  >
-                    {stateOptions.map((state) => (
-                      <option
-                        key={state}
-                        value={state}
-                      >
-                        {state}
-                      </option>
-                    ))}
-                  </TextField>
+                  />
                 </Grid>
                 <Grid
                   item
@@ -241,16 +249,16 @@ function GeneralSettings({ user, className, ...rest }) {
                   xs={12}
                 >
                 <TextField
-                    error={Boolean(touched.desingation && errors.desingation)}
+                    error={Boolean(touched.designation && errors.designation)}
                     fullWidth
-                    helperText={touched.desingation && errors.desingation}
+                    helperText={touched.designation && errors.designation}
                     label="Designation"
                     name="designation"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     required
                     type="designation"
-                    value={values.desingation}
+                    value={values.designation}
                     variant="outlined"
                   />
                 </Grid>
