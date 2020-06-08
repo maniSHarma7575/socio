@@ -188,4 +188,6 @@ router.post('/updatePassword',(req,res)=>{
     })
 })
 
+
+
 module.exports = router

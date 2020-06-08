@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const requireLogin = require('../middleware/requireLogin')
 const Post = mongoose.model("Post")
 const User=mongoose.model("User")
+const bcrypt = require('bcrypt')
 
 router.get('/user/:id',requireLogin,(req,res)=>{
   User.findOne({_id:req.params.id})
@@ -98,15 +99,22 @@ router.put('/unfollow',requireLogin,(req,res)=>{
   })
 })
 
-router.put('/updatephoto',requireLogin,(req,res)=>{
-  User.findByIdAndUpdate(req.user._id,{$set:{photo:req.body.photo}},{new:true},
-    (err,result)=>{
-      if(err)
-      {
-        return res.status(422).json({error:"Photo cannot be uploaded"})
-      }
-      res.json(result)
-    })
+router.put('/updatepass',requireLogin,(req,res)=>{
+  bcrypt.hash(req.body.password, 12)
+  .then(hashpassword=>{
+    User.findByIdAndUpdate(req.user._id,{$set:{password:hashpassword}},{new:true},
+      (err,result)=>{
+        if(err)
+        {
+          return res.status(422).json({error:"Password cannot be updated"})
+        }
+        res.json({message:'Password Updated Successfully'})
+      })
+  })
+  .catch(error=>{
+    console.log(error)
+  })
+ 
 })
 router.put('/updatecover',requireLogin,(req,res)=>{
   User.findByIdAndUpdate(req.user._id,{$set:{cover:req.body.cover}},{new:true},
