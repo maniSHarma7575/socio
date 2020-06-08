@@ -16,7 +16,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-
+import axios from '../../utils/axios'
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -48,8 +48,18 @@ function Security({ className, ...rest }) {
         setSubmitting
       }) => {
         try {
-          // Make API request
-     
+          axios.put('/updatepass',{
+            password:values.password
+          },{
+            headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+          }
+          }).then((response)=>{
+              console.log(response.data)
+          },(error)=>{
+            console.log(error)
+          })
           resetForm();
           setStatus({ success: true });
           setSubmitting(false);

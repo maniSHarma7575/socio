@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
@@ -18,9 +18,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
-
-const stateOptions = ['Alabama', 'New York', 'San Francisco'];
+import axios from '../../../utils/axios'
+import {UserContext} from '../../../App'
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -29,25 +28,31 @@ const useStyles = makeStyles(() => ({
 function GeneralSettings({ user, className, ...rest }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-
+  const {state,dispatch}=useContext(UserContext)
   return (
     <Formik
       enableReinitialize
       initialValues={{
-        canHire: user.canHire,
         country: user.country,
         email: user.email,
-        firstName: user.firstName,
-        isPublic: user.isPublic,
-        lastName: user.lastName,
+        name: user.name,
         phone: user.phone,
         state: user.state,
+        city:user.currentCity,
+        origin:user.originCity,
+        designation:user.designation,
+        previousJobCompany:user.previousJob.company,
+        previousJobTitle:user.previousJob.title,
+        currentJobCompany:user.currentJob.company,
+        currentJobTitle:user.currentJob.title,
+        origin:user.originCity,
+        quote:user.quote
+
       }}
       validationSchema={Yup.object().shape({
         country: Yup.string().max(255).required('Country is required'),
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        firstName: Yup.string().max(255).required('First name is required'),
-        lastName: Yup.string().max(255).required('Last name is required')
+        name: Yup.string().max(255).required('Name is required'),
       })}
       onSubmit={async (values, {
         resetForm,
@@ -56,7 +61,23 @@ function GeneralSettings({ user, className, ...rest }) {
         setSubmitting
       }) => {
         try {
-         
+         console.log(values)
+          axios.put('/userupdate',{
+            ...values
+          },{
+            headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+          }
+          }).then((response)=>{
+              console.log(response.data)
+              
+              localStorage.setItem("user",JSON.stringify(response.data))
+              dispatch({type:'USER',payload:response.data})
+              
+          },(error)=>{
+            console.log(error)
+          })
           resetForm();
           setStatus({ success: true });
           enqueueSnackbar('Profile updated', {
@@ -97,16 +118,16 @@ function GeneralSettings({ user, className, ...rest }) {
                   xs={12}
                 >
                   <TextField
-                    error={Boolean(touched.firstName && errors.firstName)}
+                    error={Boolean(touched.name && errors.name)}
                     fullWidth
-                    helperText={touched.firstName && errors.firstName}
-                    label="First Name"
-                    name="firstName"
+                    helperText={touched.name && errors.name}
+                    label="Name"
+                    name="name"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     required
-                    type="firstName"
-                    value={values.firstName}
+                    type="name"
+                    value={values.name}
                     variant="outlined"
                   />
                 </Grid>
@@ -115,26 +136,7 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <TextField
-                    error={Boolean(touched.lastName && errors.lastName)}
-                    fullWidth
-                    helperText={touched.lastName && errors.lastName}
-                    label="Last Name"
-                    name="lastName"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    required
-                    type="lastName"
-                    value={values.lastName}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
+                   <TextField
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
                     helperText={touched.email && errors.email ? errors.email : 'We will use this email to contact you'}
@@ -143,6 +145,7 @@ function GeneralSettings({ user, className, ...rest }) {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     required
+                    disabled
                     type="email"
                     value={values.email}
                     variant="outlined"
@@ -170,25 +173,37 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <TextField
+                 <TextField
+                  error={Boolean(touched.state && errors.state)}
                     fullWidth
                     label="Select State"
                     name="state"
+                    helperText={touched.state && errors.state}
+                    onBlur={handleBlur}
                     onChange={handleChange}
-                    select
-                    SelectProps={{ native: true }}
+                    required
                     value={values.state}
                     variant="outlined"
-                  >
-                    {stateOptions.map((state) => (
-                      <option
-                        key={state}
-                        value={state}
-                      >
-                        {state}
-                      </option>
-                    ))}
-                  </TextField>
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                   <TextField
+                    error={Boolean(touched.city && errors.city)}
+                    fullWidth
+                    helperText={touched.city && errors.city}
+                    label="Current City"
+                    name="city"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="city"
+                    value={values.city}
+                    variant="outlined"
+                  />
                 </Grid>
                 <Grid
                   item
@@ -214,24 +229,18 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <Typography
-                    variant="h6"
-                    color="textPrimary"
-                  >
-                    Make Contact Info Public
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    Means that anyone viewing your profile will be able to see your
-                    contacts details
-                  </Typography>
-                  <Switch
-                    checked={values.isPublic}
-                    edge="start"
-                    name="isPublic"
+                 <TextField
+                    error={Boolean(touched.origin && errors.origin)}
+                    fullWidth
+                    helperText={touched.origin && errors.origin}
+                    label="Origin City"
+                    name="origin"
+                    onBlur={handleBlur}
                     onChange={handleChange}
+                    required
+                    type="origin"
+                    value={values.origin}
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid
@@ -239,27 +248,126 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <Typography
-                    variant="h6"
-                    color="textPrimary"
-                  >
-                    Available to hire
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    Toggling this will let your teammates know that you are available
-                    for acquiring new projects
-                  </Typography>
-                  <Switch
-                    checked={values.canHire}
-                    edge="start"
-                    name="canHire"
+                <TextField
+                    error={Boolean(touched.designation && errors.designation)}
+                    fullWidth
+                    helperText={touched.designation && errors.designation}
+                    label="Designation"
+                    name="designation"
+                    onBlur={handleBlur}
                     onChange={handleChange}
+                    required
+                    type="designation"
+                    value={values.designation}
+                    variant="outlined"
                   />
                 </Grid>
               </Grid>
+             
+            </CardContent>
+            <CardHeader title="Achievement" />
+            <Divider />
+            <CardContent>
+            <Grid
+                container
+                spacing={4}
+            >
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.currentJobCompany && errors.currentJobCompany)}
+                    fullWidth
+                    helperText={touched.currentJobCompany && errors.currentJobCompany}
+                    label="Current Company"
+                    name="currentJobCompany"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="currentJobCompany"
+                    value={values.currentJobCompany}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                    <TextField
+                    error={Boolean(touched.currentJobTitle && errors.currentJobTitle)}
+                    fullWidth
+                    helperText={touched.currentJobTitle && errors.currentJobTitle}
+                    label="Current Title"
+                    name="currentJobTitle"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="currentJobTitle"
+                    value={values.currentJobTitle}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.previousJobCompany && errors.previousJobCompany)}
+                    fullWidth
+                    helperText={touched.previousJobCompany && errors.previousJobCompany}
+                    label="previous Company"
+                    name="previousJobCompany"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="previousJobCompany"
+                    value={values.previousJobCompany}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                    <TextField
+                    error={Boolean(touched.previousJobTitle && errors.previousJobTitle)}
+                    fullWidth
+                    helperText={touched.previousJobTitle && errors.previousJobTitle}
+                    label="previous Title"
+                    name="previousJobTitle"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="previousJobTitle"
+                    value={values.previousJobTitle}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.quote && errors.quote)}
+                    fullWidth
+                    helperText={touched.quote && errors.quote}
+                    label="Quote"
+                    name="quote"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="quote"
+                    value={values.quote}
+                    variant="outlined"
+                  />
+                </Grid>
+            </Grid>
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>
