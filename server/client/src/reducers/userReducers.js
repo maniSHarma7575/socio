@@ -17,10 +17,15 @@ export const reducer=(state,action)=>{
         ...state,
         photo:action.payload
       }
-      case "UPDATECOVER":
+    case "UPDATECOVER":
         return{
           ...state,
           cover:action.payload
+        }
+    case "UPDATEAVATAR":
+        return{
+          ...state,
+          avatar:action.payload
         }
     default:
       return state

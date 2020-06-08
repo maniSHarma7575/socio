@@ -48,6 +48,8 @@ function Account() {
   const handleLogout = async () => {
     try {
       handleClose();
+      localStorage.clear()
+      dispatch({type:"CLEAR"})
       history.push('/');
     } catch (error) {
       enqueueSnackbar('Unable to logout', {

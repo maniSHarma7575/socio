@@ -34,20 +34,18 @@ function GeneralSettings({ user, className, ...rest }) {
     <Formik
       enableReinitialize
       initialValues={{
-        canHire: user.canHire,
         country: user.country,
         email: user.email,
-        firstName: user.firstName,
-        isPublic: user.isPublic,
-        lastName: user.lastName,
+        name: user.name,
         phone: user.phone,
         state: user.state,
+        city:user.currentCity,
+        originCity:'canada'
       }}
       validationSchema={Yup.object().shape({
         country: Yup.string().max(255).required('Country is required'),
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        firstName: Yup.string().max(255).required('First name is required'),
-        lastName: Yup.string().max(255).required('Last name is required')
+        name: Yup.string().max(255).required('Name is required'),
       })}
       onSubmit={async (values, {
         resetForm,
@@ -97,16 +95,16 @@ function GeneralSettings({ user, className, ...rest }) {
                   xs={12}
                 >
                   <TextField
-                    error={Boolean(touched.firstName && errors.firstName)}
+                    error={Boolean(touched.name && errors.name)}
                     fullWidth
-                    helperText={touched.firstName && errors.firstName}
-                    label="First Name"
-                    name="firstName"
+                    helperText={touched.name && errors.name}
+                    label="Name"
+                    name="name"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     required
-                    type="firstName"
-                    value={values.firstName}
+                    type="name"
+                    value={values.name}
                     variant="outlined"
                   />
                 </Grid>
@@ -115,26 +113,7 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <TextField
-                    error={Boolean(touched.lastName && errors.lastName)}
-                    fullWidth
-                    helperText={touched.lastName && errors.lastName}
-                    label="Last Name"
-                    name="lastName"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    required
-                    type="lastName"
-                    value={values.lastName}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
+                   <TextField
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
                     helperText={touched.email && errors.email ? errors.email : 'We will use this email to contact you'}
@@ -170,7 +149,7 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <TextField
+                 <TextField
                     fullWidth
                     label="Select State"
                     name="state"
@@ -189,6 +168,25 @@ function GeneralSettings({ user, className, ...rest }) {
                       </option>
                     ))}
                   </TextField>
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                   <TextField
+                    error={Boolean(touched.city && errors.city)}
+                    fullWidth
+                    helperText={touched.city && errors.city}
+                    label="Current City"
+                    name="city"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="city"
+                    value={values.city}
+                    variant="outlined"
+                  />
                 </Grid>
                 <Grid
                   item
@@ -214,24 +212,18 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <Typography
-                    variant="h6"
-                    color="textPrimary"
-                  >
-                    Make Contact Info Public
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    Means that anyone viewing your profile will be able to see your
-                    contacts details
-                  </Typography>
-                  <Switch
-                    checked={values.isPublic}
-                    edge="start"
-                    name="isPublic"
+                 <TextField
+                    error={Boolean(touched.origin && errors.origin)}
+                    fullWidth
+                    helperText={touched.origin && errors.origin}
+                    label="Origin City"
+                    name="origin"
+                    onBlur={handleBlur}
                     onChange={handleChange}
+                    required
+                    type="origin"
+                    value={values.origin}
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid
@@ -239,25 +231,6 @@ function GeneralSettings({ user, className, ...rest }) {
                   md={6}
                   xs={12}
                 >
-                  <Typography
-                    variant="h6"
-                    color="textPrimary"
-                  >
-                    Available to hire
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    Toggling this will let your teammates know that you are available
-                    for acquiring new projects
-                  </Typography>
-                  <Switch
-                    checked={values.canHire}
-                    edge="start"
-                    name="canHire"
-                    onChange={handleChange}
-                  />
                 </Grid>
               </Grid>
               {errors.submit && (

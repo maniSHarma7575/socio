@@ -66,6 +66,14 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:''
     },
+    state:{
+        type:String,
+        default:''
+    },
+    country:{
+        type:String,
+        default:''
+    },
     originCity:{
         type:String,
         default:''
