@@ -10,7 +10,6 @@ export const CLOSE_SIDEBAR = '@chat/close-sidebar';
 
 export function getContacts() {
   const request = axios.get('/api/chat/contacts');
-
   return (dispatch) => {
     request.then((response) => dispatch({
       type: GET_CONTACTS,

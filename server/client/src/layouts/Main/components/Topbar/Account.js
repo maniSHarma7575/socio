@@ -95,13 +95,13 @@ function Account() {
       >
         <MenuItem
           component={RouterLink}
-          to="#"
+          to={`/profile/${state._id}`}
         >
           Profile
         </MenuItem>
         <MenuItem
           component={RouterLink}
-          to="#"
+          to="/account"
         >
           Account
         </MenuItem>
