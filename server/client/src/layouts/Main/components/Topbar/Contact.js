@@ -133,7 +133,7 @@ function Contacts() {
                   )}
                 </ListItem>
               );
-            */})}
+            })*/}
           </List>
         </Box>
       </Popover>
