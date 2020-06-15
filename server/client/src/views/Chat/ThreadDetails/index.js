@@ -19,7 +19,7 @@ import {
 import {
   markThreadAsSeen,
   getThread
-} from 'src/actions/chatActions';
+} from '../../../actions/chatActions';
 import Toolbar from './Toolbar';
 import Message from '../Message';
 import MessageAdd from '../MessageAdd';

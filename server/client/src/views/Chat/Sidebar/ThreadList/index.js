@@ -12,7 +12,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import { getThreads } from 'src/actions/chatActions';
+import { getThreads } from '../../../../actions/chatActions';
 import {
   Avatar,
   Box,

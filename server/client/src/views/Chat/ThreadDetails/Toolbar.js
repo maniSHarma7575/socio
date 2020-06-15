@@ -31,8 +31,8 @@ import {
   Archive as ArchiveIcon,
   BellOff as BellOffIcon
 } from 'react-feather';
-import OnlineIndicator from 'src/components/OnlineIndicator';
-import { openSidebar } from 'src/actions/chatActions';
+import OnlineIndicator from '../../../components/OnlineIndicator';
+import { openSidebar } from '../../../actions/chatActions';
 
 function contactSelector(state, participantIds) {
   const { contacts } = state.chat;
