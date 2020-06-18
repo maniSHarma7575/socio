@@ -12,8 +12,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {UserContext} from '../../../../App'
-import 
-//import { useSelector } from 'react-redux';
 
 function contactSelector(thread, userId) {
   const contact = thread.participantIds.filter((participantId) => participantId._id !== userId);

@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-//import { useSelector, useDispatch } from 'react-redux';
+import React, { useRef, useState,useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
@@ -18,6 +18,7 @@ import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { Send as SendIcon } from 'react-feather';
 import { addMessage } from '../../actions/chatActions';
+import {UserContext} from '../../App'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +45,8 @@ function MessageAdd({
 }) {
   const classes = useStyles();
   //const { user } = useSelector((state) => state.account);
-  //const dispatch = useDispatch();
+  const {state}=useContext(UserContext)
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const fileInputRef = useRef(null);
   const [body, setBody] = useState('');
@@ -62,7 +64,7 @@ function MessageAdd({
       }
 
       await dispatch(addMessage({
-        userId: user.id,
+        userId:state._id,
         threadKey: thread.key,
         body,
         attachments
@@ -93,7 +95,7 @@ function MessageAdd({
     >
       <Avatar
         alt="Person"
-        src={user.avatar}
+        src={state.avatar}
       />
       <Paper
         variant="outlined"

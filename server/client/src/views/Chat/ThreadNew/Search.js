@@ -4,7 +4,7 @@ import React, {
   useEffect
 } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -24,11 +24,11 @@ import clsx from 'clsx';
 
 function filterContacts(contacts, searchText) {
   if (!searchText) {
-    return contacts.allIds;
+    return contacts;
   }
 
-  return contacts.allIds.filter(
-    (contactId) => contacts.byId[contactId].name.toLowerCase().includes(searchText.toLowerCase())
+  return contacts.filter(
+    (contact) => contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
 }
 
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Search({ className, ...rest }) {
   const classes = useStyles();
- // const { contacts } = useSelector((state) => state.chat);
+  const { contacts } = useSelector((state) => state.chat);
   const inputRef = useRef(null);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
@@ -66,7 +66,7 @@ function Search({ className, ...rest }) {
     // eslint-disable-next-line
   }, [searchText]);
 
-  const filteredContactIds = filterContacts(contacts, searchText);
+  const filteredContactIds = filterContacts(contacts.chatContacts, searchText);
 
   return (
     <div
@@ -131,15 +131,15 @@ function Search({ className, ...rest }) {
                   </Typography>
                 </Box>
                 <List>
-                  {filteredContactIds.map((contactId) => {
-                    const contact = contacts.byId[contactId];
+                  {filteredContactIds.map((contactItem) => {
+                    const contact = contactItem;
 
                     return (
                       <ListItem
                         button
                         component={RouterLink}
-                        key={contact.id}
-                        to={`/app/chat/${contact.username}`}
+                        key={contact._id}
+                        to={`/app/chat/${contact.name}`}
                       >
                         <ListItemAvatar>
                           <Avatar
