@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -58,7 +58,7 @@ function Message({
 }) {
   const classes = useStyles();
   const [openedFile, setOpenedFile] = useState(null);
-  const sender = useSelector((state) => senderSelector(state, message.senderId));
+  //const sender = useSelector((state) => senderSelector(state, message.senderId));
 
   return (
     <div

@@ -5,11 +5,11 @@ import React, {
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
-import Page from 'src/components/Page';
-import { getContacts } from 'src/actions/chatActions';
+import Page from '../../components/Page';
+import { getContacts } from '../../actions/chatActions';
 import Sidebar from './Sidebar';
-import ThreadDetails from './ThreadDetails';
-import ThreadNew from './ThreadNew';
+//import ThreadDetails from './ThreadDetails';
+//import ThreadNew from './ThreadNew';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 function ChatView() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { threadKey } = useParams();
+ // const { threadKey } = useParams();
   const pageRef = useRef(null);
 
   useEffect(() => {
@@ -38,7 +38,8 @@ function ChatView() {
       ref={pageRef}
     >
       <Sidebar containerRef={pageRef} />
-      {threadKey ? <ThreadDetails /> : <ThreadNew /> }
+      {//threadKey ? <ThreadDetails /> : <ThreadNew /> 
+      }
     </Page>
   );
 }

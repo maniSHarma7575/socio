@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const { MONGO_URI } = require('./config/keys')
 require('./models/user')
 require('./models/posts')
+require('./models/chats')
 const requireLogin = require('./middleware/requireLogin')
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 app.use(require('./routes/user'))
+app.use('/chat',require('./routes/chat'))
 
 if(process.env.NODE_ENV=="production"){
     app.use(express.static('client/build'))

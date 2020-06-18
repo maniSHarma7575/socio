@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
@@ -17,7 +17,7 @@ import {
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternate';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { Send as SendIcon } from 'react-feather';
-import { addMessage } from 'src/actions/chatActions';
+import { addMessage } from '../../actions/chatActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,8 +43,8 @@ function MessageAdd({
   ...rest
 }) {
   const classes = useStyles();
-  const { user } = useSelector((state) => state.account);
-  const dispatch = useDispatch();
+  //const { user } = useSelector((state) => state.account);
+  //const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const fileInputRef = useRef(null);
   const [body, setBody] = useState('');

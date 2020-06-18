@@ -12,7 +12,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import { getThreads } from 'src/actions/chatActions';
+import { getThreads } from '../../../../actions/chatActions';
 import {
   Avatar,
   Box,
@@ -31,11 +31,11 @@ import ThreadItem from './ThreadItem';
 
 function filterContacts(contacts, searchText) {
   if (!searchText) {
-    return contacts.allIds;
+    return contacts;
   }
 
-  return contacts.allIds.filter(
-    (contactId) => contacts.byId[contactId].name.toLowerCase().includes(searchText.toLowerCase())
+  return contacts.filter(
+    (contact) => contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
 }
 
@@ -72,7 +72,7 @@ function ThreadList({ className, ...rest }) {
   const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { threads, contacts } = useSelector((state) => state.chat);
+  const {contacts } = useSelector((state) => state.chat);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
 
@@ -103,7 +103,6 @@ function ThreadList({ className, ...rest }) {
     }
     // eslint-disable-next-line
   }, [location.pathname]);
-
   return (
     <div
       className={clsx(classes.root, className)}
@@ -136,15 +135,14 @@ function ThreadList({ className, ...rest }) {
               Contacts
             </Typography>
             <List>
-              {filterContacts(contacts, searchText).map((contactId) => {
-                const contact = contacts.byId[contactId];
-
+              {filterContacts(contacts.chatContacts, searchText).map((contactItem) => {
+                const contact = contactItem
                 return (
                   <ListItem
                     button
                     component={RouterLink}
-                    key={contact.id}
-                    to={`/app/chat/${contact.username}`}
+                    key={contact._id}
+                    to={`/app/chat/${contact._id}`}
                   >
                     <ListItemAvatar>
                       <Avatar
@@ -171,12 +169,13 @@ function ThreadList({ className, ...rest }) {
       <List className={clsx(classes.threadList,
         { [classes.hideThreadList]: displaySearchResults })}
       >
-        {threads.allKeys.map((threadKey) => (
+        {/*threads.allKeys.map((threadKey) => (
           <ThreadItem
             key={threadKey}
             thread={threads.byKey[threadKey]}
           />
-        ))}
+        ))*/
+        }
       </List>
     </div>
   );

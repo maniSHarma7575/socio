@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
-import {
+/*import {
   useSelector,
   useDispatch
-} from 'react-redux';
+} from 'react-redux';*/
 import {
   Avatar,
   Box,
@@ -31,8 +31,8 @@ import {
   Archive as ArchiveIcon,
   BellOff as BellOffIcon
 } from 'react-feather';
-import OnlineIndicator from 'src/components/OnlineIndicator';
-import { openSidebar } from 'src/actions/chatActions';
+import OnlineIndicator from '../../../components/OnlineIndicator';
+import { openSidebar } from '../../../actions/chatActions';
 
 function contactSelector(state, participantIds) {
   const { contacts } = state.chat;
@@ -74,12 +74,12 @@ function Toolbar({
 }) {
   const classes = useStyles();
   const moreRef = useRef(null);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(false);
-  const contact = useSelector((state) => contactSelector(state, thread.participantIds));
+  //const contact = useSelector((state) => contactSelector(state, thread.participantIds));
 
   const handleOpenSidebar = () => {
-    dispatch(openSidebar());
+    //dispatch(openSidebar());
   };
 
   const handleMenuOpen = () => {
