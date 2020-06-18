@@ -10,6 +10,7 @@ import { getContacts } from '../../actions/chatActions';
 import Sidebar from './Sidebar';
 //import ThreadDetails from './ThreadDetails';
 import ThreadNew from './ThreadNew';
+import ThreadDetails from './ThreadDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ function ChatView() {
   const dispatch = useDispatch();
   const { threadKey } = useParams();
   const pageRef = useRef(null);
-
+  console.log(threadKey)
   useEffect(() => {
     dispatch(getContacts());
   }, [dispatch]);
@@ -38,7 +39,7 @@ function ChatView() {
       ref={pageRef}
     >
       <Sidebar containerRef={pageRef} />
-      {threadKey ?<div>ThreadDetails</div> : <ThreadNew /> 
+      {threadKey ?<ThreadDetails /> : <ThreadNew /> 
       }
     </Page>
   );

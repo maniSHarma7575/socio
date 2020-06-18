@@ -139,7 +139,7 @@ function Search({ className, ...rest }) {
                         button
                         component={RouterLink}
                         key={contact._id}
-                        to={`/app/chat/${contact.name}`}
+                        to={`/chat/${contact.name}`}
                       >
                         <ListItemAvatar>
                           <Avatar
