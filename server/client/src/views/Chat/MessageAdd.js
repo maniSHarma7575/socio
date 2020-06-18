@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
@@ -43,8 +43,8 @@ function MessageAdd({
   ...rest
 }) {
   const classes = useStyles();
-  const { user } = useSelector((state) => state.account);
-  const dispatch = useDispatch();
+  //const { user } = useSelector((state) => state.account);
+  //const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const fileInputRef = useRef(null);
   const [body, setBody] = useState('');

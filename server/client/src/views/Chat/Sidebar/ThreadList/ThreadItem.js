@@ -11,7 +11,7 @@ import {
   ListItemText,
   makeStyles
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 
 function contactSelector(state, thread, userId) {
   const { contacts } = state.chat;
@@ -44,8 +44,8 @@ function ThreadItem({
   ...rest
 }) {
   const classes = useStyles();
-  const { user } = useSelector((state) => state.account);
-  const contact = useSelector((state) => contactSelector(state, thread, user.id));
+  //const { user } = useSelector((state) => state.account);
+ // const contact = useSelector((state) => contactSelector(state, thread, user.id));
 
   const lastMessage = thread.messages[thread.messages.length - 1];
   const lastMessageInfo = lastMessage ? `${lastMessage.senderId === user.id ? 'Me:' : ''} ${lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body}` : '';

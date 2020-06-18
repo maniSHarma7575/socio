@@ -6,10 +6,10 @@ import {
   useHistory,
   useParams
 } from 'react-router';
-import {
+/*import {
   useSelector,
   useDispatch
-} from 'react-redux';
+} from 'react-redux';*/
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -63,10 +63,10 @@ const useStyles = makeStyles((theme) => ({
 
 function ThreadDetails() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+ // const dispatch = useDispatch();
   const { threadKey } = useParams();
   const history = useHistory();
-  const thread = useSelector((state) => threadSelector(state, threadKey, history));
+ // const thread = useSelector((state) => threadSelector(state, threadKey, history));
   const messagesRef = useRef(null);
 
   function scrollMessagesToBottom() {
@@ -76,10 +76,11 @@ function ThreadDetails() {
     }
   }
 
-  useEffect(() => {
-    dispatch(getThread(threadKey));
-    dispatch(markThreadAsSeen(threadKey));
+ /* useEffect(() => {
+   dispatch(getThread(threadKey));
+   dispatch(markThreadAsSeen(threadKey));
   }, [dispatch, threadKey]);
+  */
 
   useEffect(() => {
     if (thread) {

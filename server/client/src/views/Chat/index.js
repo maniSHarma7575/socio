@@ -5,7 +5,7 @@ import React, {
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
-import Page from '../../components/Page';
+import Page from 'src/components/Page';
 import { getContacts } from '../../actions/chatActions';
 import Sidebar from './Sidebar';
 import ThreadDetails from './ThreadDetails';

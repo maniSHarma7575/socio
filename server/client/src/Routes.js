@@ -2,7 +2,7 @@ import { Switch, Redirect ,useHistory} from 'react-router-dom';
 import React,{Suspense,useContext,useEffect} from "react";
 import { RouteWithLayout, NotFoundRoute } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
-import {Dashboard, Account,FeedView,Login,NotFound,SignUp,NewPassword,ResetPassword,ProfileView} from './views'
+import {Dashboard, Account,FeedView,Login,NotFound,SignUp,NewPassword,ResetPassword,ProfileView,ChatView} from './views'
 import {PrivateRouteWithLayout} from './components'
 import {UserContext} from './App'
 const Routes = () => {
@@ -51,6 +51,16 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/feed"
+      />
+      <PrivateRouteWithLayout 
+        component={ChatView}
+        path={
+          [
+            '/chat/new',
+            '/chat/:threadkey'
+          ]
+        }
+        layout={MainLayout}
       />
       <RouteWithLayout
         component={SignUp}

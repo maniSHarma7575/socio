@@ -4,7 +4,7 @@ import React, {
   useEffect
 } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Search({ className, ...rest }) {
   const classes = useStyles();
-  const { contacts } = useSelector((state) => state.chat);
+ // const { contacts } = useSelector((state) => state.chat);
   const inputRef = useRef(null);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);

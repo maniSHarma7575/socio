@@ -8,10 +8,10 @@ import {
 } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {
+/*import {
   useDispatch,
   useSelector
-} from 'react-redux';
+} from 'react-redux';*/
 import { getThreads } from '../../../../actions/chatActions';
 import {
   Avatar,
@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
 function ThreadList({ className, ...rest }) {
   const classes = useStyles();
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { threads, contacts } = useSelector((state) => state.chat);
+  //const dispatch = useDispatch();
+  //const { threads, contacts } = useSelector((state) => state.chat);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
 
@@ -93,9 +93,9 @@ function ThreadList({ className, ...rest }) {
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(getThreads());
-  }, [dispatch]);
+  }, [dispatch]);*/
 
   useEffect(() => {
     if (displaySearchResults) {
