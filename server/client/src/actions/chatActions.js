@@ -23,8 +23,11 @@ export function getContacts() {
 }
 
 export function getThreads() {
-  const request = axios.get('/api/chat/threads');
-
+  const request = axios.get('/chat/threads',{
+    headers:{
+      "Authorization":"Bearer "+localStorage.getItem('jwt')
+    }
+  });
   return (dispatch) => {
     request.then((response) => dispatch({
       type: GET_THREADS,

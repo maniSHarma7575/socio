@@ -5,6 +5,17 @@ const Chat = mongoose.model("Chat")
 const User=mongoose.model("User")
 const requireLogin = require('../middleware/requireLogin')
 
+router.get('/threads',requireLogin,(req,res)=>{
+  Chat.find({user:req.user._id})
+  .populate('receiver','_id name avatar')
+  .then((result)=>{
+    res.json({result})
+  })
+  .catch((error)=>{
+    console.log(error)
+  })
+})
+
 router.get('/contacts',requireLogin,(req,res)=>{
   User.find()
   .select("_id name avatar")
@@ -15,5 +26,4 @@ router.get('/contacts',requireLogin,(req,res)=>{
     console.log(error)
   })
 })
-
 module.exports=router

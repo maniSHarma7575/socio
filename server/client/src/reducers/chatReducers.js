@@ -15,8 +15,7 @@ const initialState = {
     chatContacts:[]
   },
   threads: {
-    byKey: {},
-    allKeys: []
+    chatThreads:[]
   },
   sidebarOpen: false
 };
@@ -31,11 +30,8 @@ const chatReducer = (state = initialState, action) => {
     }
 
     case GET_THREADS: {
-      const { threads } = action.payload;
-
       return produce(state, (draft) => {
-        draft.threads.byKey = objFromArray(threads, 'key');
-        draft.threads.allKeys = Object.keys(draft.threads.byKey);
+        draft.contacts.chatThreads=[...action.payload.result]
       });
     }
 

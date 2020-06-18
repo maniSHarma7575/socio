@@ -93,9 +93,9 @@ function ThreadList({ className, ...rest }) {
     }
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     dispatch(getThreads());
-  }, [dispatch]);*/
+  }, [dispatch]);
 
   useEffect(() => {
     if (displaySearchResults) {
@@ -103,7 +103,6 @@ function ThreadList({ className, ...rest }) {
     }
     // eslint-disable-next-line
   }, [location.pathname]);
-  console.log(contacts)
   return (
     <div
       className={clsx(classes.root, className)}
@@ -138,7 +137,6 @@ function ThreadList({ className, ...rest }) {
             <List>
               {filterContacts(contacts.chatContacts, searchText).map((contactItem) => {
                 const contact = contactItem
-                console.log(contact)
                 return (
                   <ListItem
                     button
