@@ -8,11 +8,11 @@ import {
 } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-/*import {
+import {
   useDispatch,
   useSelector
-} from 'react-redux';*/
-import { getThreads } from '../../../../actions/chatActions';
+} from 'react-redux';
+//import { getThreads } from '../../../../actions/chatActions';
 import {
   Avatar,
   Box,
@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
 function ThreadList({ className, ...rest }) {
   const classes = useStyles();
   const location = useLocation();
-  //const dispatch = useDispatch();
-  //const { threads, contacts } = useSelector((state) => state.chat);
+  const dispatch = useDispatch();
+  const {contacts } = useSelector((state) => state.chat);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
 
@@ -144,16 +144,16 @@ function ThreadList({ className, ...rest }) {
                     button
                     component={RouterLink}
                     key={contact.id}
-                    to={`/app/chat/${contact.username}`}
+                    to={`/app/chat/manish`}
                   >
                     <ListItemAvatar>
                       <Avatar
-                        src={contact.avatar}
+                        src={``}
                         className={classes.contactAvatar}
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      primary={contact.name}
+                      primary="manish"
                       primaryTypographyProps={{
                         noWrap: true,
                         variant: 'h6',
@@ -171,12 +171,13 @@ function ThreadList({ className, ...rest }) {
       <List className={clsx(classes.threadList,
         { [classes.hideThreadList]: displaySearchResults })}
       >
-        {threads.allKeys.map((threadKey) => (
+        {/*threads.allKeys.map((threadKey) => (
           <ThreadItem
             key={threadKey}
             thread={threads.byKey[threadKey]}
           />
-        ))}
+        ))*/
+        }
       </List>
     </div>
   );

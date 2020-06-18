@@ -1,7 +1,6 @@
 import produce from 'immer'
 import {
   GET_CONTACTS,
-  GET_CONTACTS,
   GET_THREADS,
   GET_THREAD,
   MARK_THREAD_AS_SEEN,
@@ -13,8 +12,7 @@ import objFromArray from '../utils/objFromArray';
 
 const initialState = {
   contacts: {
-    byId: {},
-    allIds: []
+    contacts:[]
   },
   threads: {
     byKey: {},
@@ -26,12 +24,7 @@ const initialState = {
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CONTACTS: {
-      const { contacts } = action.payload;
-
-      return produce(state, (draft) => {
-        draft.contacts.byId = objFromArray(contacts);
-        draft.contacts.allIds = Object.keys(draft.contacts.byId);
-      });
+      console.log(action.payload)
     }
 
     case GET_THREADS: {

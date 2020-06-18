@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ThreadItem({
   active,
-  thread,
   className,
   ...rest
 }) {
@@ -47,8 +46,8 @@ function ThreadItem({
   //const { user } = useSelector((state) => state.account);
  // const contact = useSelector((state) => contactSelector(state, thread, user.id));
 
-  const lastMessage = thread.messages[thread.messages.length - 1];
-  const lastMessageInfo = lastMessage ? `${lastMessage.senderId === user.id ? 'Me:' : ''} ${lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body}` : '';
+ // const lastMessage = thread.messages[thread.messages.length - 1];
+ // const lastMessageInfo = lastMessage ? `${lastMessage.senderId === user.id ? 'Me:' : ''} ${lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body}` : '';
 
   return (
     <ListItem
@@ -60,24 +59,24 @@ function ThreadItem({
         className
       )}
       component={RouterLink}
-      to={`/app/chat/${thread.key}`}
+      to={`/app/chat/${`thread.key`}`}
       {...rest}
     >
       <ListItemAvatar>
         <Avatar
           alt="Person"
           className={classes.avatar}
-          src={contact.avatar}
+          src={``}
         />
       </ListItemAvatar>
       <ListItemText
-        primary={contact.name}
+        primary={`manish`}
         primaryTypographyProps={{
           noWrap: true,
           variant: 'h6',
           color: 'textPrimary'
         }}
-        secondary={lastMessageInfo}
+        secondary={`lastMessageInfo`}
         secondaryTypographyProps={{
           noWrap: true,
           variant: 'body2',
@@ -90,14 +89,16 @@ function ThreadItem({
         flexDirection="column"
         alignItems="flex-end"
       >
-        {thread.unreadCount > 0 && (
+        {
+          /*thread.unreadCount > 0 && (
           <Chip
             className={classes.unreadIndicator}
             color="secondary"
             size="small"
             label={thread.unreadCount}
           />
-        )}
+        )*/
+        }
       </Box>
     </ListItem>
   );
