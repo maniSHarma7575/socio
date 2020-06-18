@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -11,13 +11,13 @@ import {
   ListItemText,
   makeStyles
 } from '@material-ui/core';
+import {UserContext} from '../../../../App'
+import 
 //import { useSelector } from 'react-redux';
 
-function contactSelector(state, thread, userId) {
-  const { contacts } = state.chat;
-  const contactId = thread.participantIds.filter((participantId) => participantId !== userId)[0];
-
-  return contacts.byId[contactId];
+function contactSelector(thread, userId) {
+  const contact = thread.participantIds.filter((participantId) => participantId._id !== userId);
+  return contact
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -39,15 +39,16 @@ const useStyles = makeStyles((theme) => ({
 
 function ThreadItem({
   active,
+  thread,
   className,
   ...rest
 }) {
   const classes = useStyles();
-  //const { user } = useSelector((state) => state.account);
- // const contact = useSelector((state) => contactSelector(state, thread, user.id));
+  const {state}=useContext(UserContext)
+  const contact=contactSelector(thread, state._id);
 
- // const lastMessage = thread.messages[thread.messages.length - 1];
- // const lastMessageInfo = lastMessage ? `${lastMessage.senderId === user.id ? 'Me:' : ''} ${lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body}` : '';
+  const lastMessage = thread.messages[thread.messages.length - 1];
+  const lastMessageInfo = lastMessage ? `${lastMessage.senderId === state._id ? 'Me:' : ''} ${lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body}` : '';
 
   return (
     <ListItem
@@ -59,24 +60,24 @@ function ThreadItem({
         className
       )}
       component={RouterLink}
-      to={`/app/chat/${`thread.key`}`}
+      to={`/app/chat/${thread._id}`}
       {...rest}
     >
       <ListItemAvatar>
         <Avatar
           alt="Person"
           className={classes.avatar}
-          src={``}
+          src={contact.avatar}
         />
       </ListItemAvatar>
       <ListItemText
-        primary={`manish`}
+        primary={contact.name}
         primaryTypographyProps={{
           noWrap: true,
           variant: 'h6',
           color: 'textPrimary'
         }}
-        secondary={`lastMessageInfo`}
+        secondary={lastMessageInfo}
         secondaryTypographyProps={{
           noWrap: true,
           variant: 'body2',
@@ -90,14 +91,14 @@ function ThreadItem({
         alignItems="flex-end"
       >
         {
-          /*thread.unreadCount > 0 && (
+          thread.unreadCount > 0 && (
           <Chip
             className={classes.unreadIndicator}
             color="secondary"
             size="small"
             label={thread.unreadCount}
           />
-        )*/
+        )
         }
       </Box>
     </ListItem>
