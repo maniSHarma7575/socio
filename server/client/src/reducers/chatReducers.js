@@ -12,7 +12,7 @@ import objFromArray from '../utils/objFromArray';
 
 const initialState = {
   contacts: {
-    contacts:[]
+    chatContacts:[]
   },
   threads: {
     byKey: {},
@@ -25,6 +25,9 @@ const chatReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CONTACTS: {
       console.log(action.payload)
+      return produce(state,(draft)=>{
+        draft.contacts.chatContacts=[...action.payload.result]
+      })
     }
 
     case GET_THREADS: {

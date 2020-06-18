@@ -12,7 +12,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-//import { getThreads } from '../../../../actions/chatActions';
+import { getThreads } from '../../../../actions/chatActions';
 import {
   Avatar,
   Box,
@@ -31,11 +31,11 @@ import ThreadItem from './ThreadItem';
 
 function filterContacts(contacts, searchText) {
   if (!searchText) {
-    return contacts.allIds;
+    return contacts;
   }
 
-  return contacts.allIds.filter(
-    (contactId) => contacts.byId[contactId].name.toLowerCase().includes(searchText.toLowerCase())
+  return contacts.filter(
+    (contact) => contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
 }
 
@@ -103,7 +103,7 @@ function ThreadList({ className, ...rest }) {
     }
     // eslint-disable-next-line
   }, [location.pathname]);
-
+  console.log(contacts)
   return (
     <div
       className={clsx(classes.root, className)}
@@ -136,24 +136,24 @@ function ThreadList({ className, ...rest }) {
               Contacts
             </Typography>
             <List>
-              {filterContacts(contacts, searchText).map((contactId) => {
-                const contact = contacts.byId[contactId];
-
+              {filterContacts(contacts.chatContacts, searchText).map((contactItem) => {
+                const contact = contactItem
+                console.log(contact)
                 return (
                   <ListItem
                     button
                     component={RouterLink}
-                    key={contact.id}
-                    to={`/app/chat/manish`}
+                    key={contact._id}
+                    to={`/app/chat/${contact._id}`}
                   >
                     <ListItemAvatar>
                       <Avatar
-                        src={``}
+                        src={contact.avatar}
                         className={classes.contactAvatar}
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      primary="manish"
+                      primary={contact.name}
                       primaryTypographyProps={{
                         noWrap: true,
                         variant: 'h6',
