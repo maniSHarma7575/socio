@@ -1,5 +1,5 @@
 import React from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   Box,
   Divider,
@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
 
 function ThreadNew() {
   const classes = useStyles();
- // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleOpenSidebar = () => {
-    //dispatch(openSidebar());
+    dispatch(openSidebar());
   };
 
   return (

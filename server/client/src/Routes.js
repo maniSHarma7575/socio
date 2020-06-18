@@ -57,9 +57,15 @@ const Routes = () => {
         path={
           [
             '/chat/new',
-            '/chat/:threadkey'
+            '/chat/:threadKey'
           ]
         }
+        layout={MainLayout}
+      />
+      <PrivateRouteWithLayout 
+        exact
+        component={ChatView}
+        path='/chat/:threadkey'
         layout={MainLayout}
       />
       <RouteWithLayout

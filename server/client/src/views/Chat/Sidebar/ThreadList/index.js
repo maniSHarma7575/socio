@@ -72,7 +72,7 @@ function ThreadList({ className, ...rest }) {
   const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
-  const {contacts } = useSelector((state) => state.chat);
+  const {contacts,threads } = useSelector((state) => state.chat);
   const [searchText, setSearchText] = useState('');
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
 
@@ -142,7 +142,7 @@ function ThreadList({ className, ...rest }) {
                     button
                     component={RouterLink}
                     key={contact._id}
-                    to={`/app/chat/${contact._id}`}
+                    to={`/chat/${contact._id}`}
                   >
                     <ListItemAvatar>
                       <Avatar
@@ -169,12 +169,12 @@ function ThreadList({ className, ...rest }) {
       <List className={clsx(classes.threadList,
         { [classes.hideThreadList]: displaySearchResults })}
       >
-        {/*threads.allKeys.map((threadKey) => (
+        {threads.chatThreads.map((threadKey) => (
           <ThreadItem
-            key={threadKey}
-            thread={threads.byKey[threadKey]}
+            key={threadKey._id}
+            thread={threadKey}
           />
-        ))*/
+        ))
         }
       </List>
     </div>

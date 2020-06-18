@@ -7,7 +7,7 @@ const requireLogin = require('../middleware/requireLogin')
 
 router.get('/threads',requireLogin,(req,res)=>{
   Chat.find({user:req.user._id})
-  .populate('receiver','_id name avatar')
+  .populate('participantIds','_id name avatar')
   .then((result)=>{
     res.json({result})
   })

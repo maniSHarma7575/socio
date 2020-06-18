@@ -2,18 +2,25 @@ const mongoose =require('mongoose')
 const {ObjectId} =mongoose.Schema.Types
 
 const chatSchema=new mongoose.Schema({
-  receiver:{
-    type: ObjectId,
-    ref: "User"
-  },
-  message:[{
+  participantIds:[
+    {
+      type: ObjectId,
+      ref: "User"
+    }
+  ],
+  messages:[{
     body:String,
     attachments:String,
+    senderId:{
+      type:ObjectId,
+      ref:"User"
+    },
+    contentType:String,
     createdAt    : { type: Date, required: true, default: Date.now }
   }],
-  user:{
-    type:ObjectId,
-    ref:"User"
+  unreadCount:{
+    type:Number,
+    default:0
   }
 },{timestamps:true})
 
