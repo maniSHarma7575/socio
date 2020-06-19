@@ -1,15 +1,16 @@
 import React, {
   useEffect,
-  useRef
+  useRef,
+  useContext
 } from 'react';
 import {
   useHistory,
   useParams
 } from 'react-router';
-/*import {
+import {
   useSelector,
   useDispatch
-} from 'react-redux';*/
+} from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
@@ -23,28 +24,22 @@ import {
 import Toolbar from './Toolbar';
 import Message from '../Message';
 import MessageAdd from '../MessageAdd';
+import {UserContext} from '../../../App'
 
-function threadSelector(state, threadKey, history) {
-  const { threads, contacts } = state.chat;
-  const { user } = state.account;
-  const thread = threads.byKey[threadKey];
-
+function threadSelector(state,reduxState, threadKey, history) {
+  const { threads, contacts } = reduxState.chat;
+  const thread = threads.chatThreads.filter((threadItem)=>threadItem._id==threadKey)
   // When starting a new thread, we don't have it in store
   // So we can create a temporary new one where threadKey is the contact username
-  if (!thread) {
-    const contactId = contacts.allIds.filter(
-      // eslint-disable-next-line no-underscore-dangle
-      (_contactId) => contacts.byId[_contactId].username === threadKey
-    )[0];
-
-    if (!contactId) {
+  if (!thread.length) {
+    const contactId=contacts.chatContacts.filter((contact)=>contact._id==threadKey)
+    if (!contactId.length) {
       history.push('/app/chat/new');
     }
-
     return {
       key: threadKey,
       type: 'ONE_TO_ONE', // We might add GROUP type in future
-      participantIds: [contactId, user.id],
+      participantIds: [contactId[0]._id, state._id],
       messages: []
     };
   }
@@ -63,12 +58,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ThreadDetails() {
   const classes = useStyles();
- // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { threadKey } = useParams();
   const history = useHistory();
- // const thread = useSelector((state) => threadSelector(state, threadKey, history));
+  const {state}=useContext(UserContext)
+  const thread = useSelector((rstate) => threadSelector(state,rstate, threadKey, history));
   const messagesRef = useRef(null);
-
   function scrollMessagesToBottom() {
     if (messagesRef.current) {
       // eslint-disable-next-line no-underscore-dangle
@@ -76,11 +71,11 @@ function ThreadDetails() {
     }
   }
 
- /* useEffect(() => {
+  useEffect(() => {
    dispatch(getThread(threadKey));
    dispatch(markThreadAsSeen(threadKey));
   }, [dispatch, threadKey]);
-  */
+  
 
   useEffect(() => {
     if (thread) {
@@ -104,9 +99,9 @@ function ThreadDetails() {
         component={PerfectScrollbar}
         options={{ suppressScrollX: true }}
       >
-        {thread.messages.length > 0 && thread.messages.map((message) => (
+        {thread.messages && thread.messages.length > 0 && thread.messages.map((message) => (
           <Message
-            key={message.id}
+            key={message._id}
             message={message}
           />
         ))}
