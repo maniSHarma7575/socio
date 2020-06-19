@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -33,16 +33,15 @@ import {
 } from 'react-feather';
 import OnlineIndicator from '../../../components/OnlineIndicator';
 import { openSidebar } from '../../../actions/chatActions';
+import {UserContext} from '../../../App'
 
-function contactSelector(state, participantIds) {
-  const { contacts } = state.chat;
-  const { user } = state.account;
-
+function contactSelector(state,reduxState,participantIds) {
+  const {contacts}=reduxState.chat
   // In most apps one thread can have more than two participants
   // We could display all participants, but for now we only select one
-  const contactId = participantIds.filter((participantId) => participantId !== user.id)[0];
-
-  return contacts.byId[contactId];
+  const contactId = participantIds.filter((participantId) => participantId != state);
+  const contact=contacts.chatContacts.filter((contactItem)=>contactItem._id==contactId[0])
+  return contact[0]
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -76,10 +75,12 @@ function Toolbar({
   const moreRef = useRef(null);
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(false);
-  const contact = useSelector((state) => contactSelector(state, thread.participantIds));
+  const {state} =useContext(UserContext)
+  const  contact = useSelector((rstate) => contactSelector(state._id,rstate,thread.participantIds));
+
 
   const handleOpenSidebar = () => {
-    //dispatch(openSidebar());
+    dispatch(openSidebar());
   };
 
   const handleMenuOpen = () => {

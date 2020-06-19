@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -12,14 +12,13 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
-function senderSelector(state, senderId) {
-  const { user } = state.account;
+import {UserContext} from '../../App'
+function senderSelector(state,reduxState, senderId) {
+  
   const { contacts } = state.chat;
 
-  if (senderId !== user.id) {
-    const contact = contacts.byId[senderId];
-
+  if (senderId !== state._id) {
+    const contact = contacts.chatContacts.filter((contactItem)=>contactItem._id==senderId)
     return {
       avatar: contact.avatar,
       name: contact.name,
@@ -28,7 +27,7 @@ function senderSelector(state, senderId) {
   }
 
   return {
-    avatar: user.avatar,
+    avatar: state.avatar,
     name: 'Me',
     type: 'user'
   };
@@ -54,11 +53,12 @@ const useStyles = makeStyles((theme) => ({
 function Message({
   className,
   message,
+  user,
   ...rest
 }) {
   const classes = useStyles();
   const [openedFile, setOpenedFile] = useState(null);
-  //const sender = useSelector((state) => senderSelector(state, message.senderId));
+  const sender = useSelector((state) => senderSelector(user,state, message.senderId));
 
   return (
     <div
@@ -95,12 +95,12 @@ function Message({
               {message.contentType === 'image' ? (
                 <Box
                   mt={2}
-                  onClick={() => setOpenedFile(message.body)}
+                  onClick={() => setOpenedFile(message.attachments)}
                 >
                   <img
                     alt="Attachment"
                     className={classes.image}
-                    src={message.body}
+                    src={message.attachments}
                   />
                 </Box>
               ) : (
