@@ -20,6 +20,7 @@ import { Send as SendIcon } from 'react-feather';
 import { addMessage } from '../../actions/chatActions';
 import {UserContext} from '../../App'
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -51,6 +52,7 @@ function MessageAdd({
   const fileInputRef = useRef(null);
   const [body, setBody] = useState('');
   const attachments = [];
+  const {socket} = useSelector((state) => state.chat);
 
   const handleChange = (event) => {
     event.persist();
@@ -63,12 +65,16 @@ function MessageAdd({
         return;
       }
       console.log(thread)
-      await dispatch(addMessage({
+      socket.emit('newMessage',{userId:state._id,
+        threadKey: thread.key,
+        body,
+        attachments},thread.participantIds[1],thread.participantIds[0])
+      /*await dispatch(addMessage({
         userId:state._id,
         threadKey: thread.key,
         body,
         attachments
-      }));
+      }));*/
       setBody('');
       onAdd();
     } catch (error) {

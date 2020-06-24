@@ -27,8 +27,9 @@ module.exports=socket=>{
     io.sockets.emit('connectedUsers',onlineUsers)
 
   })
-  socket.on('chatting',(message,sender,receiver)=>{
-    socket.to(receiver.emit('reciverPeer',message,socket.id,receiver))
+  socket.on('newMessage',(message,sender,receiver)=>{
+    console.log(message,sender,receiver)
+    socket.to(receiver).emit('reciverPeer',message,socket.id,receiver)
     socket.emit('senderPeer',message,socket.id,receiver)
   })
 }

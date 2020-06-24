@@ -1,5 +1,5 @@
 import axios from '../utils/axios';
-
+import io from 'socket.io-client';
 export const GET_CONTACTS = '@chat/get-contacts';
 export const GET_THREADS = '@chat/get-threads';
 export const GET_THREAD = '@chat/get-thread';
@@ -114,7 +114,7 @@ export function closeSidebar() {
   };
 }
 
-export const initSocket=userId=>dispatch=>{
+export const initSocket=(userID)=>dispatch=>{
   return new Promise((resolve, reject) => {
     const socket = io.connect('http://localhost:5000', {
       query: `userID=${userID}`
