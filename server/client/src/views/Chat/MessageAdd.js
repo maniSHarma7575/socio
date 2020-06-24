@@ -62,7 +62,7 @@ function MessageAdd({
       if (!body || !thread) {
         return;
       }
-
+      console.log(thread)
       await dispatch(addMessage({
         userId:state._id,
         threadKey: thread.key,

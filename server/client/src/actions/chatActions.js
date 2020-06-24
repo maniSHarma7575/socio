@@ -78,7 +78,11 @@ export function addMessage({
   body,
   attachments
 }) {
-  const request = axios.post('/api/chat/messages/new', {
+  console.log(userId,
+    threadKey,
+    body,
+    attachments)
+  /*const request = axios.post('/api/chat/messages/new', {
     userId,
     threadKey,
     body,
@@ -94,6 +98,7 @@ export function addMessage({
       }
     }));
   };
+  */
 }
 
 export function openSidebar() {
