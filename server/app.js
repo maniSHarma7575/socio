@@ -30,6 +30,11 @@ if(process.env.NODE_ENV=="production"){
     })
 }
 
-app.listen(PORT, () => {
+const server=app.listen(PORT, () => {
     console.log("server is running on port", PORT)
 })
+
+const io=(module.exports.io=require('socket.io')(server))
+const SocketManager=require('./socketManager')
+io.on('connection',SocketManager)
+

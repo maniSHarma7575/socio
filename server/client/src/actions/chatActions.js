@@ -1,5 +1,5 @@
 import axios from '../utils/axios';
-
+import io from 'socket.io-client';
 export const GET_CONTACTS = '@chat/get-contacts';
 export const GET_THREADS = '@chat/get-threads';
 export const GET_THREAD = '@chat/get-thread';
@@ -7,6 +7,7 @@ export const MARK_THREAD_AS_SEEN = '@chat/mark-thread-as-seen';
 export const ADD_MESSAGE = '@chat/add-message';
 export const OPEN_SIDEBAR = '@chat/open-sidebar';
 export const CLOSE_SIDEBAR = '@chat/close-sidebar';
+export const INIT_SOCKET='@chat/init-Socket'
 
 export function getContacts() {
   const request = axios.get('/chat/contacts',{
@@ -78,7 +79,11 @@ export function addMessage({
   body,
   attachments
 }) {
-  const request = axios.post('/api/chat/messages/new', {
+  console.log(userId,
+    threadKey,
+    body,
+    attachments)
+  /*const request = axios.post('/api/chat/messages/new', {
     userId,
     threadKey,
     body,
@@ -94,6 +99,7 @@ export function addMessage({
       }
     }));
   };
+  */
 }
 
 export function openSidebar() {
@@ -106,4 +112,27 @@ export function closeSidebar() {
   return {
     type: CLOSE_SIDEBAR
   };
+}
+
+export const initSocket=(userID)=>dispatch=>{
+  return new Promise((resolve, reject) => {
+    const socket = io.connect('http://localhost:5000', {
+      query: `userID=${userID}`
+    });
+    if (socket) {
+      resolve(
+        dispatch({
+          type: INIT_SOCKET,
+          payload: socket
+        })
+      );
+    } else {
+      reject(
+        dispatch({
+          type: INIT_SOCKET,
+          payload: null
+        })
+      );
+    }
+  });
 }
