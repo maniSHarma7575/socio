@@ -6,7 +6,8 @@ import {
   MARK_THREAD_AS_SEEN,
   ADD_MESSAGE,
   OPEN_SIDEBAR,
-  CLOSE_SIDEBAR
+  CLOSE_SIDEBAR,
+  INIT_SOCKET
 } from '../actions/chatActions'
 import objFromArray from '../utils/objFromArray';
 
@@ -17,6 +18,7 @@ const initialState = {
   threads: {
     chatThreads:[]
   },
+  socket:null,
   sidebarOpen: false
 };
 
@@ -97,6 +99,12 @@ const chatReducer = (state = initialState, action) => {
         draft.sidebarOpen = false;
       });
     }
+
+    case INIT_SOCKET:
+      return {
+        ...state,
+        socket: action.payload
+      };
 
     default: {
       return state;

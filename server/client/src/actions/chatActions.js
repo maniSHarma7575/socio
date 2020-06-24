@@ -7,6 +7,7 @@ export const MARK_THREAD_AS_SEEN = '@chat/mark-thread-as-seen';
 export const ADD_MESSAGE = '@chat/add-message';
 export const OPEN_SIDEBAR = '@chat/open-sidebar';
 export const CLOSE_SIDEBAR = '@chat/close-sidebar';
+export const INIT_SOCKET='@chat/init-Socket'
 
 export function getContacts() {
   const request = axios.get('/chat/contacts',{
@@ -111,4 +112,27 @@ export function closeSidebar() {
   return {
     type: CLOSE_SIDEBAR
   };
+}
+
+export const initSocket=userId=>dispatch=>{
+  return new Promise((resolve, reject) => {
+    const socket = io.connect('http://localhost:5000', {
+      query: `userID=${userID}`
+    });
+    if (socket) {
+      resolve(
+        dispatch({
+          type: INIT_SOCKET,
+          payload: socket
+        })
+      );
+    } else {
+      reject(
+        dispatch({
+          type: INIT_SOCKET,
+          payload: null
+        })
+      );
+    }
+  });
 }

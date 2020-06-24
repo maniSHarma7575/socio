@@ -11,7 +11,7 @@ import Sidebar from './Sidebar';
 //import ThreadDetails from './ThreadDetails';
 import ThreadNew from './ThreadNew';
 import ThreadDetails from './ThreadDetails';
-
+import io from 'socket.io-client'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
